@@ -1,4 +1,4 @@
-![Logo Upt](img/upt.png)
+![Logo Upt](media/logo-upt.png)
 
 # **UNIVERSIDAD PRIVADA DE TACNA**
 **FACULTAD DE INGENIERÍA** **Escuela Profesional de Ingeniería de Sistemas**
@@ -212,7 +212,7 @@ La tasa de interés utilizada en el análisis financiero actúa como una tasa de
 **Inversión:** S/. 9,540
 **Tasa de interés:** 3%
 
-![Tabla](img/tabla1.png)
+![Tabla Costos](media/tablacostos.png)
 
 #### 5.1.2.5. Relación Beneficio/Costo
 | B/C | 1.44 |
