@@ -1,4 +1,4 @@
-**![C:\\Users\\EPIS\\Documents\\upt.png][image1]**
+![Logo Upt](media/logo-upt.png)
 
 **UNIVERSIDAD PRIVADA DE TACNA**
 
@@ -199,7 +199,7 @@ Para que el diseño de NexusLib fuera preciso, recolectamos datos directamente d
 
 ## **a) Diagrama del Proceso Propuesto – Diagrama de actividades Inicial** {#a)-diagrama-del-proceso-propuesto-–-diagrama-de-actividades-inicial}
 
-**![][image2]**
+![diagrama_propuesto](media/fd03/diagrama_propuesto.png)
 
 # **IV. Especificación de Requerimientos de Software** {#iv.-especificación-de-requerimientos-de-software}
 
@@ -247,13 +247,13 @@ Para que el diseño de NexusLib fuera preciso, recolectamos datos directamente d
 
 ### **a) Diagrama de Paquetes** {#a)-diagrama-de-paquetes}
 
-![][image3]
+![diagrama_paquetes](media/fd03/diagrama_paquetes.png)
 
 El sistema se divide en cuatro bloques: Interfaz para la interacción del usuario, Lógica para procesar las búsquedas, Conectores para fuentes externas y la Base de Datos para el almacenamiento de la información institucional. Esta organización separa las vistas de los datos para un desarrollo más ordenado.
 
 ### **b) Diagrama de Casos de Uso** {#b)-diagrama-de-casos-de-uso}
 
-![][image4]
+![diagrama_casos_uso](media/fd03/diagrama_casos_uso.png)
 
 ### 
 
@@ -369,27 +369,27 @@ El sistema se divide en cuatro bloques: Interfaz para la interacción del usuari
 
 **RF-01: Búsqueda Unificada**
 
-**![][image5]**
+![actividad_rf01](media/fd03/actividad_rf01.png)
 
 **RF-02: Visualización de Detalles**
 
-**![][image6]**
+![actividad_rf02](media/fd03/actividad_rf02.png)
 
 **RF-03: Consulta de Disponibilidad**
 
-**![][image7]**
+![actividad_rf03](media/fd03/actividad_rf03.png)
 
 **RF-04: Filtrado de Resultados**
 
-**![][image8]**
+![actividad_rf04](media/fd03/actividad_rf04.png)
 
 **RF-05: Localización de Recursos**
 
-**![][image9]**
+![actividad_rf05](media/fd03/actividad_rf05.png)
 
 **RF-06: Acceso Digital**
 
-**![][image10]**
+![actividad_rf06](media/fd03/actividad_rf06.png)
 
 ### 
 
@@ -403,31 +403,31 @@ El sistema se divide en cuatro bloques: Interfaz para la interacción del usuari
 
 **RF-01: Búsqueda Unificada**
 
-**![][image11]**
+![secuencia_rf01](media/fd03/secuencia_rf01.png)
 
 **RF-02: Visualización de Detalles**
 
-**![][image12]**
+![secuencia_rf02](media/fd03/secuencia_rf02.png)
 
 **RF-03: Consulta de Disponibilidad**
 
-**![][image13]**
+![secuencia_rf03](media/fd03/secuencia_rf03.png)
 
 **RF-04: Filtrado de Resultados**
 
-**![][image14]**
+![secuencia_rf04](media/fd03/secuencia_rf04.png)
 
 **RF-05: Localización de Recursos**
 
-**![][image15]**
+![secuencia_rf05](media/fd03/secuencia_rf05.png)
 
 **RF-06: Acceso Digital**
 
-**![][image16]**
+![secuencia_rf06](media/fd03/secuencia_rf06.png)
 
 ### **d) Diagrama de Clases** {#d)-diagrama-de-clases}
 
-**![][image17]**
+![diagrama_clases](media/fd03/diagrama_clases.png)
 
 # **CONCLUSIONES** {#conclusiones}
 
