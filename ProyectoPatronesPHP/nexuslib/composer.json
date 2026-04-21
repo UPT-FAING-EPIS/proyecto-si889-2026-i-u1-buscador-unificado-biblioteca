@@ -1,0 +1,14 @@
+{
+    "name": "leandro/nexuslib",
+    "description": "Buscador unificado de biblioteca UPT",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/",
+            "Src\\": "src/"
+        }
+    },
+    "require": {
+        "vlucas/phpdotenv": "^5.5"
+    }
+}

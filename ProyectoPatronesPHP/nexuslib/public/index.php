@@ -1,0 +1,11 @@
+<?php
+
+
+require_once __DIR__ . '/../vendor/autoload.php';
+
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
+$dotenv->load();
+
+
+$controller = new App\Controllers\SearchController();
+$controller->index();

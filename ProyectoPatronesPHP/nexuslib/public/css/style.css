@@ -1,0 +1,118 @@
+/* Modern book card styles */
+.book-card {
+	transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.book-card:hover {
+	transform: translateY(-5px);
+	box-shadow: 0 0.75rem 1.5rem rgba(0, 0, 0, 0.12);
+}
+
+.text-truncate-2 {
+	display: -webkit-box;
+	line-clamp: 2;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.badge-local,
+.badge-digital {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: 0.45rem 0.7rem;
+	border-radius: 999px;
+	font-weight: 600;
+	font-size: 0.72rem;
+	letter-spacing: 0.02em;
+	line-height: 1;
+	box-shadow: 0 0.25rem 0.6rem rgba(0, 0, 0, 0.08);
+	color: #fff;
+}
+
+.badge-local {
+	background-color: #198754;
+}
+
+.badge-digital {
+	background-color: #0dcaf0;
+	color: #0f172a;
+}
+
+
+.book-card {
+    min-height: 180px;
+    margin-bottom: 1rem;
+    background: #fff;
+    border-radius: 8px;
+	cursor: default;
+}
+
+
+.book-card img {
+    border-right: 1px solid #eee;
+    max-height: 220px;
+}
+
+.badge-container {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    gap: 5px;
+}
+
+.btn-preview {
+	background-color: #0dcaf0;
+	color: #fff;
+	border: none;
+	padding: 0.5rem 1.5rem;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+	transition: background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-preview:hover {
+	background-color: #0bacce;
+	color: #fff;
+	box-shadow: 0 0.35rem 0.85rem rgba(13, 202, 240, 0.35);
+}
+
+.filter-bar .form-select {
+	width: 220px;
+	max-width: 100%;
+	border-color: #dee2e6;
+	padding-top: 0.55rem;
+	padding-bottom: 0.55rem;
+	padding-left: 0.9rem;
+	padding-right: 2.2rem;
+	transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.filter-bar .form-select:hover {
+	border-color: #cfd4da;
+	box-shadow: 0 0.1rem 0.35rem rgba(0, 0, 0, 0.06);
+}
+
+.filter-bar .form-select:focus {
+	border-color: #0dcaf0;
+	box-shadow: 0 0 0 0.2rem rgba(13, 202, 240, 0.25);
+}
+
+.filter-bar .form-check-input {
+	transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.filter-bar .form-check-input:focus {
+	border-color: #0dcaf0;
+	box-shadow: 0 0 0 0.2rem rgba(13, 202, 240, 0.25);
+}
+
+.filter-bar .form-check-input:checked {
+	background-color: #0dcaf0;
+	border-color: #0dcaf0;
+}
