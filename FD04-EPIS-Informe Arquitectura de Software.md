@@ -1,4 +1,4 @@
-**![C:\\Users\\EPIS\\Documents\\upt.png][image1]**
+![Logo Upt](media/logo-upt.png)
 
 **UNIVERSIDAD PRIVADA DE TACNA**
 
@@ -251,7 +251,7 @@ Este escenario justifica la implementación del patrón Strategy.
 
 ### **3.1.3. Diagramas de Casos de uso** {#3.1.3.-diagramas-de-casos-de-uso}
 
-*![][image2]*
+![diagrama_casos_uso](media/fd04/diagrama_casos_uso.png)
 
 **Actores Principal y Secundario**:
 
@@ -290,23 +290,23 @@ A continuación, se describen los paquetes principales del sistema:
 5. **Capa de Infraestructura**:  
    * Maneja las conexiones de bajo nivel, como la clase Database (PDO) y la configuración de variables de entorno.
 
-*![][image3]*
+![diagrama_subsistema](media/fd04/diagrama_subsistema.png)
 
 ### **3.2.2. Diagrama de Secuencia (vista de diseño)** {#3.2.2.-diagrama-de-secuencia-(vista-de-diseño)}
 
-![][image4]
+![diagrama_secuencia](media/fd04/diagrama_secuencia.png)
 
 ### **3.2.3. Diagrama de Colaboración (vista de diseño)** {#3.2.3.-diagrama-de-colaboración-(vista-de-diseño)}
 
-![][image5]
+![diagrama_colaboracion](media/fd04/diagrama_colaboracion.png)
 
 ### **3.2.4. Diagrama de Clases** {#3.2.4.-diagrama-de-clases}
 
-![][image6]
+![diagrama_clases](media/fd04/diagrama_clases.png)
 
 ### **3.2.5. Diagrama Base de datos** {#3.2.5.-diagrama-base-de-datos}
 
-![][image7]
+![diagrama_base_datos](media/fd04/diagrama_base_datos.png)
 
 ## **3.3. Vista de Implementación (vista de desarrollo)** {#3.3.-vista-de-implementación-(vista-de-desarrollo)}
 
@@ -315,11 +315,12 @@ Esta vista describe la organización de los artefactos de software en el entorno
 ### **3.3.1. Diagrama de arquitectura software (paquetes)** {#3.3.1.-diagrama-de-arquitectura-software-(paquetes)}
 
 Este diagrama detalla cómo se distribuye el código fuente en capas físicas. Cada paquete aquí representa un directorio en el proyecto nexuslib/*.*  
-*![][image8]*
+
+![diagrama_arquitectura_paquetes](media/fd04/diagrama_arquitectura_paquetes.png)
 
 ### **3.3.2. Diagrama de arquitectura del sistema (Diagrama de componentes)** {#3.3.2.-diagrama-de-arquitectura-del-sistema-(diagrama-de-componentes)}
 
-*![][image9]*
+![diagrama_arquitectura_componentes](media/fd04/diagrama_arquitectura_componentes.png)
 
 Detalle de los Componentes:
 
@@ -353,7 +354,7 @@ Modos de Comunicación:
 
 ### **3.4.1. Diagrama de Procesos del sistema (diagrama de actividad)** {#3.4.1.-diagrama-de-procesos-del-sistema-(diagrama-de-actividad)}
 
-*![][image10]*
+![diagrama_procesos_sistema](media/fd04/diagrama_procesos_sistema.png)
 
 ## **3.5. Vista de Despliegue (vista física)** {#3.5.-vista-de-despliegue-(vista-física)}
 
@@ -372,7 +373,7 @@ El sistema se distribuye típicamente en una arquitectura de tres capas: Cliente
 
 ### **3.5.1. Diagrama de despliegue** {#3.5.1.-diagrama-de-despliegue}
 
-*![][image11]*
+![diagrama_despliegue](media/fd04/diagrama_despliegue.png)
 
 **Descripción de la infraestructura:**
 
