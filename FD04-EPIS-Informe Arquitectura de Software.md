@@ -177,14 +177,15 @@ La estrategia de implementación sigue un orden lógico: primero la conectividad
 
 ### **2.1.1. Requerimientos Funcionales** {#2.1.1.-requerimientos-funcionales}
 
-| ID | Descripción | Prioridad |
-| :---: | :---: | :---: |
-| RF01 | Búsqueda de libros en fuente externa (Google Books API). | Alta |
-| RF02 | Búsqueda de libros en base de datos local (MySQL). | Alta |
-| RF03 | Unificación de resultados de múltiples fuentes en una vista única. | Alta |
-| RF04 | Filtrado dinámico de resultados por autor e ISBN mediante patrones de estrategia. | Media |
-| RF05 | Gestión de inventario (Crear, leer, actualizar y eliminar libros locales). | Media |
-| RF06 | Visualización detallada de la información técnica de cada libro. | Baja |
+| ID | Requerimiento | Descripción | Prioridad |
+| ----- | ----- | ----- | ----- |
+| **RF-01** | Búsqueda unificada | El sistema debe realizar consultas simultáneas en el inventario físico (MySQL) y en la Google Books API, presentando los hallazgos en una lista de resultados combinada. | Alta |
+| **RF-02** | Visualización de detalles | La plataforma debe mostrar la información completa del libro (portada, resumen de Google y datos físicos de la BD) al ser seleccionado desde la lista. | Alta |
+| **RF-03** | Consulta de disponibilidad | El software debe mostrar en tiempo real si un libro físico se encuentra disponible o prestado según el stock registrado en MySQL. | Alta |
+| **RF-04** | Filtrado de resultados | La aplicación debe permitir organizar y refinar la lista de libros por criterios de autor, título, categorías o código ISBN. | Media |
+| **RF-05** | Localización de recursos | El sistema debe detallar la ubicación exacta (piso y estante) para los libros que se encuentren físicamente en la biblioteca institucional. | Media |
+| **RF-06** | Acceso digital | El buscador debe proporcionar enlaces directos para la visualización o descarga de materiales en formato digital cuando el recurso lo permita. | Media |
+| **RF-07** | Gestión de inventario | El sistema debe permitir la administración integral (crear, leer, actualizar y eliminar) de los registros bibliográficos del inventario físico local almacenados en la base de datos institucional. | Media |
 
 ### 
 

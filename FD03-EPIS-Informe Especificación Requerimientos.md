@@ -222,6 +222,7 @@ Para que el diseño de NexusLib fuera preciso, recolectamos datos directamente d
 | **RF-04** | Filtrado de resultados | La aplicación debe permitir organizar y refinar la lista de libros por criterios de autor, título, categorías o código ISBN. |
 | **RF-05** | Localización de recursos | El sistema debe detallar la ubicación exacta (piso y estante) para los libros que se encuentren físicamente en la biblioteca institucional. |
 | **RF-06** | Acceso digital | El buscador debe proporcionar enlaces directos para la visualización o descarga de materiales en formato digital cuando el recurso lo permita. |
+| **RF-07** | Gestión de inventario | El sistema debe permitir la administración integral (crear, leer, actualizar y eliminar) de los registros bibliográficos del inventario físico local almacenados en la base de datos institucional. |
 
 ## **c) Reglas de Negocio** {#c)-reglas-de-negocio}
 
