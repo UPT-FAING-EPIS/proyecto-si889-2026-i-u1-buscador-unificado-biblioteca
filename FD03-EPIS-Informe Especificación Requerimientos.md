@@ -273,12 +273,13 @@ El sistema se divide en cuatro bloques: Interfaz para la interacción del usuari
 | **Tipo** | Obligatorio |
 | **Actores** | Usuario, Sistema NexusLib, Google Books API |
 | **Descripción** | Permite al usuario realizar consultas simultáneas en el inventario físico institucional y en la base de datos externa de Google Books. |
+| **Historia de Usuario** | Como estudiante, quiero realizar una búsqueda única en una sola barra, para encontrar libros físicos y digitales al mismo tiempo. |
+| **Escenario (Gherkin)** | **Dado** que el usuario se encuentra en la interfaz de búsqueda principal. **Cuando** ingresa un término de búsqueda (título, autor o ISBN) y presiona el botón "Buscar". **Entonces** el sistema debe presentar una lista combinada con resultados del inventario local (MySQL) y la Google Books API. |
 | **Precondiciones** | El sistema debe contar con conexión a internet para acceder a la API externa. |
 | **Narrativa de cada de uso** |  |
 | **Acción del usuario** | **Respuesta del sistema** |
 | 1\. El usuario ingresa un término de búsqueda (título, autor o ISBN) en la barra principal. |  |
 | 2\. El usuario presiona el botón de "Buscar" o la tecla Enter para confirmar la consulta. | 3\. El sistema recibe el parámetro y activa la exploración simultánea en la base de datos MySQL y la API de Google. |
-|  |  |
 |  | 4\. El sistema procesa ambas fuentes, unifica la información y elimina posibles resultados duplicados. |
 |  | 5\. El sistema organiza los hallazgos priorizando aquellos libros que cuentan con ejemplares físicos disponibles en sala. |
 |  | 6\. El sistema despliega la lista combinada de resultados en la interfaz de usuario. |
@@ -290,6 +291,8 @@ El sistema se divide en cuatro bloques: Interfaz para la interacción del usuari
 | **Tipo** | Obligatorio |
 | **Actores** | Usuario, Sistema NexusLib, Google Books API |
 | **Descripción** | Permite al usuario ver la ficha completa de un libro, combinando la información de la biblioteca y los metadatos de Google. |
+| **Historia de Usuario** | Como investigador, quiero ver la ficha técnica completa de un libro, para determinar si el recurso es relevante para mi trabajo académico. |
+| **Escenario (Gherkin)** | **Dado** que el usuario ha obtenido una lista de resultados de búsqueda. **Cuando** hace clic sobre un libro específico de la lista. **Entonces** el sistema despliega la portada, la sinopsis detallada de Google y los datos de ubicación física integrados en una sola vista. |
 | **Precondiciones** | El usuario debe haber realizado una búsqueda previa y seleccionado un elemento de la lista. |
 | **Narrativa de cada de uso** |  |
 | **Acción del usuario** | **Respuesta del sistema** |
@@ -305,6 +308,8 @@ El sistema se divide en cuatro bloques: Interfaz para la interacción del usuari
 | **Tipo** | Obligatorio |
 | **Actores** | Usuario, Sistema NexusLib |
 | **Descripción** | Permite al usuario verificar en tiempo real si un ejemplar físico está disponible para préstamo basándose en el stock registrado en la base de datos. |
+| **Historia de Usuario** | Como estudiante, quiero conocer la disponibilidad real de un libro físico, para evitar traslados innecesarios a la biblioteca si el ejemplar no está en estante. |
+| **Escenario (Gherkin)** | **Dado** que el usuario visualiza los detalles de un libro físico. **Cuando** el sistema consulta el stock en tiempo real en la base de datos local. **Entonces** la interfaz muestra la cantidad de ejemplares disponibles o el mensaje "Sin stock actual". |
 | **Precondiciones** | El libro debe existir en el inventario de la base de datos institucional (MySQL). |
 | **Narrativa de cada de uso** |  |
 | **Acción del usuario** | **Respuesta del sistema** |
@@ -319,6 +324,8 @@ El sistema se divide en cuatro bloques: Interfaz para la interacción del usuari
 | **Tipo** | Obligatorio |
 | **Actores** | Usuario, Sistema NexusLib |
 | **Descripción** | Permite al usuario refinar y organizar la lista de resultados mediante filtros de origen (físico/digital), criterios de ordenamiento y estado de disponibilidad. |
+| **Historia de Usuario** | Como usuario, quiero filtrar los resultados por origen o tipo de recurso, para localizar rápidamente materiales que se ajusten a mi necesidad inmediata (física o digital). |
+| **Escenario (Gherkin)** | **Dado** que el sistema muestra una lista de resultados unificada. **Cuando** el usuario aplica un filtro (ej: "Solo Físicos") o un criterio de ordenamiento. **Entonces** la lista se actualiza automáticamente mostrando solo los elementos que cumplen con los parámetros seleccionados. |
 | **Precondiciones** | El usuario debe contar con una lista de resultados de búsqueda activa en pantalla. |
 | **Narrativa de cada de uso** |  |
 | **Acción del usuario** | **Respuesta del sistema** |
@@ -333,6 +340,8 @@ El sistema se divide en cuatro bloques: Interfaz para la interacción del usuari
 | **Tipo** | Obligatorio |
 | **Actores** | Usuario, Sistema NexusLib |
 | **Descripción** | Detalla al usuario la ubicación física exacta (piso y estante) y proporciona instrucciones de orientación para encontrar el libro en la sala. |
+| **Historia de Usuario** | Como lector, quiero conocer el piso y estante exacto de un libro, para encontrarlo físicamente en la biblioteca sin necesidad de consultar al personal. |
+| **Escenario (Gherkin)** | **Dado** que el usuario se encuentra en la vista de detalles de un libro disponible en sala. **Cuando** accede al panel de localización física. **Entonces** el sistema presenta el número de piso, el código del estante y una instrucción de guía textual. |
 | **Precondiciones** | El recurso seleccionado debe estar registrado como un ejemplar físico con stock disponible en la base de datos MySQL. |
 | **Narrativa de cada de uso** |  |
 | **Acción del usuario** | **Respuesta del sistema** |
@@ -347,6 +356,8 @@ El sistema se divide en cuatro bloques: Interfaz para la interacción del usuari
 | **Tipo** | Obligatorio |
 | **Actores** | Usuario, Sistema NexusLib, Google Books API |
 | **Descripción** | Proporciona al usuario enlaces directos para la visualización de materiales en línea cuando el recurso cuenta con una versión digital disponible. |
+| **Historia de Usuario** | Como usuario remoto, quiero acceder a enlaces de visualización digital, para consultar la información del recurso de manera inmediata desde cualquier ubicación. |
+| **Escenario (Gherkin)** | **Dado** que el libro seleccionado cuenta con una versión electrónica disponible. **Cuando** el usuario presiona el botón "Recurso Digital". **Entonces** el sistema abre automáticamente una nueva pestaña con el visor del material o el enlace al repositorio institucional. |
 | **Precondiciones** | El recurso debe contar con un enlace (URL) de vista previa válido proporcionado por la API de Google o el repositorio institucional. |
 | **Narrativa de cada de uso** |  |
 | **Acción del usuario** | **Respuesta del sistema** |
