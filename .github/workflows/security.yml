@@ -16,6 +16,6 @@ jobs:
       - name: Run Snyk to check for vulnerabilities
         uses: snyk/actions/php@master
         with:
-          args: --file=ProyectoNexusLib/nexuslib/composer.json
+          args: --file=ProyectoNexusLib/nexuslib/composer.json --package-manager=composer
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
