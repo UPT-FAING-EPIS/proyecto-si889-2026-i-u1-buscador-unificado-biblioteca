@@ -12,10 +12,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      
+      - name: Setup Snyk
+        uses: snyk/actions/setup@master
 
-      - name: Run Snyk to check for vulnerabilities
-        uses: snyk/actions/php@master
-        with:
-          args: --file=ProyectoNexusLib/nexuslib/composer.json --package-manager=composer
+      - name: Run Snyk Test
+        run: |
+          cd ProyectoNexusLib/nexuslib
+          snyk test --package-manager=composer
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
