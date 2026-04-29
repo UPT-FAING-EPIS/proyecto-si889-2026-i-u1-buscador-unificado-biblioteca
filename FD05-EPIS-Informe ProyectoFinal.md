@@ -1,4 +1,4 @@
-**![C:\\Users\\EPIS\\Documents\\upt.png][image1]**
+![Logo Upt](media/logo-upt.png)
 
 **UNIVERSIDAD PRIVADA DE TACNA**
 
@@ -30,17 +30,17 @@ Integrantes:
 
 [1\. Antecedentes	3](#1.-antecedentes)
 
-[2\. Título	4](#2.-título)
+[2\. Título	3](#2.-título)
 
-[3\. Autores	4](#3.-autores)
+[3\. Autores	3](#3.-autores)
 
-[4\. Planteamiento del problema	4](#4.-planteamiento-del-problema)
+[4\. Planteamiento del problema	3](#4.-planteamiento-del-problema)
 
-[4.1. Problema	4](#4.1.-problema)
+[4.1. Problema	3](#4.1.-problema)
 
 [4.2. Justificación	4](#4.2.-justificación)
 
-[4.3. Alcance	5](#4.3.-alcance)
+[4.3. Alcance	4](#4.3.-alcance)
 
 [5\. Marco Teórico	5](#5.-marco-teórico)
 
@@ -48,19 +48,17 @@ Integrantes:
 
 [6.1. Análisis de Factibilidad (técnico, económico, operativa, social, legal, ambiental)	6](#6.1.-análisis-de-factibilidad-\(técnico,-económico,-operativa,-social,-legal,-ambiental\))
 
-[6.2. Tecnología de Desarrollo	7](#6.2.-tecnología-de-desarrollo)
+[6.2. Tecnología de Desarrollo	6](#6.2.-tecnología-de-desarrollo)
 
-[6.3. Metodología de implementación	7](#6.3.-metodología-de-implementación)
+[6.3. Metodología de implementación	6](#6.3.-metodología-de-implementación)
 
-[7\. Cronograma	8](#7.-cronograma)
+[7\. Presupuesto	7](#7.-presupuesto)
 
-[8\.  Presupuesto	8](#8.-presupuesto)
+[8\. Conclusiones y Recomendaciones	8](#8.-conclusiones-y-recomendaciones)
 
-[9\. Conclusiones y Recomendaciones	8](#9.-conclusiones-y-recomendaciones)
+[9\. Bibliografía	8](#9.-bibliografía)
 
-[10\. Bibliografía	8](#10.-bibliografía)
-
-[Anexos	8](#anexos)
+[Anexos	9](#anexos)
 
 # **1\. Antecedentes** {#1.-antecedentes}
 
@@ -204,13 +202,32 @@ Documentos Tecnicos
 | SRS (Especificación de Requerimientos) | 1.0 | Anexo 03 |
 | SAD (Arquitectura de Software) | 1.0 | Anexo 04 |
 
-# **7\. Cronograma** {#7.-cronograma}
+# **7\. Presupuesto** {#7.-presupuesto}
 
-# **8\.  Presupuesto** {#8.-presupuesto}
+Resumen consolidado de la inversión inicial requerida para el Sistema de Buscador Unificado.
 
-# **9\. Conclusiones y Recomendaciones** {#9.-conclusiones-y-recomendaciones}
+| Categoría | Costo (S/.) |
+| :---- | :---- |
+| Costos de Software | 1,320 |
+| Costos de Recursos Humanos | 7,500 |
+| Costos Generales de Administración | 720 |
+| **Costo Total del Proyecto** | **9,540** |
 
-# **10\. Bibliografía** {#10.-bibliografía}
+## 
+
+# **8\. Conclusiones y Recomendaciones** {#8.-conclusiones-y-recomendaciones}
+
+* **Optimización de la búsqueda académica:** Se logró centralizar la información bibliográfica mediante el Sistema NexusLib, resolviendo el problema crítico de fragmentación entre inventarios físicos y digitales. Esta unificación permite reducir el tiempo de investigación de los usuarios, eliminando los procesos lentos de consulta en sistemas separados que anteriormente tomaban entre 15 y 20 minutos.  
+* **Integridad y escalabilidad técnica:** La aplicación de patrones de software estructurales y de comportamiento, específicamente Adapter, Facade y Strategy, garantiza una arquitectura de software modular y desacoplada. Esto permite que la integración entre la Google Books API y la base de datos local MySQL sea eficiente, facilitando el mantenimiento futuro y la adición de nuevas fuentes de metadatos sin comprometer el núcleo del sistema.  
+* **Viabilidad económica y rentabilidad:** El análisis financiero confirma que el proyecto es plenamente factible y rentable para la institución, presentando un VAN positivo de S/ 4,199.12 y una tasa interna de retorno (TIR) del 17%. Con una relación Beneficio/Costo de 1.44, se asegura que la inversión inicial de S/ 9,540 es recuperable y generará un valor agregado significativo a largo plazo.  
+* **Cumplimiento de requerimientos y usabilidad:** El sistema cumple con los 6 requerimientos funcionales estratégicos, permitiendo no solo la búsqueda híbrida, sino también la localización física exacta (piso y estante) y el acceso digital directo. Esto, sumado al enfoque de diseño Mobile First, asegura una alta usabilidad y satisfacción para el estudiante e investigador sin requerir capacitación especializada.  
+* **Eficiencia en la infraestructura cloud:** La configuración de la infraestructura como código (IaC) mediante Terraform para el despliegue en Microsoft Azure garantiza la alta disponibilidad y seguridad del sistema. Esta implementación técnica asegura que NexusLib sea una plataforma robusta, capaz de manejar consultas simultáneas con tiempos de respuesta optimizados.
+
+# **9\. Bibliografía** {#9.-bibliografía}
+
+* Sánchez-Tarragó, N., & Alfonso-Sánchez, I. R. (2005). Biblioteca híbrida: el bibliotecario en medio del tránsito de lo tradicional a lo moderno. *ACIMED*, 13(2). [http://eprints.rclis.org/6474/1/Biblioteca\_hibrida.pdf](http://eprints.rclis.org/6474/1/Biblioteca_hibrida.pdf)  
+* Guerrero-Cedeño, M., et al. (2025). Sistemas integrados de gestión bibliotecaria en universidades: una revisión sistemática. *Dialnet*. [https://dialnet.unirioja.es/descarga/articulo/10442413.pdf](https://dialnet.unirioja.es/descarga/articulo/10442413.pdf)  
+* Daramola, C. F. (2025). Exploring the impact of Digital and Physical Resources on Accessibility and Efficiency in College Libraries. *ResearchGate*. [https://www.researchgate.net/publication/390300560\_Exploring\_the\_impact\_of\_Digital\_and\_Physical\_Resources](https://gemini.google.com/app/23de6b84b664f6e2?utm_source=app_launcher&utm_medium=owned&utm_campaign=base_all)
 
 # **Anexos** {#anexos}
 
@@ -223,3 +240,4 @@ Anexo 03 Documento SRS
 Anexo 04 Documento SAD
 
 Anexo 05 Manuales y otros documentos
+
