@@ -1,0 +1,21 @@
+name: Security Scan
+
+on:
+  push:
+    branches: [ "main", "develop" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  vulnerability-scan:
+    name: Snyk Security Scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run Snyk to check for vulnerabilities
+        uses: snyk/actions/php@master
+        with:
+          args: --file=ProyectoNexusLib/nexuslib/composer.json
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
