@@ -86,9 +86,32 @@ if (is_array($resultado) && isset($resultado['libro'])) {
                 <i class="bi bi-cloud-download"></i> Recurso Digital
             </a>
         <?php endif; ?>
+
+        <button id='open-reader-btn' 
+                class='btn-read' 
+                data-isbn='<?= $libro->isbn ?>'>
+            <i class='fas fa-book-open'></i> Vista Previa
+        </button>
         
         <a href="javascript:history.back()" class="btn btn-outline-secondary btn-lg">Volver</a>
+
+        <p class='book-description clamped' id='bookDescription'>
+            <?= htmlspecialchars($libro->descripcion) ?>
+        </p>
+        <button class='toggle-desc-btn' id='toggleDescription' style='display: none;'>▼ Ver más</button>
     </div>
 </div>
+
+<!-- Canvas para el visor de Google Books -->
+<div class="container-fluid mt-4">
+    <div id='viewerCanvas' style='width: 100%; height: 600px; display: none; margin-top: 20px;'></div>
+</div>
+
+<script type="text/javascript" src="https://www.google.com/books/jsapi.js"></script>
+<script type="text/javascript">
+    if (typeof google !== 'undefined') {
+        google.books.load(); 
+    }
+</script>
 
 <?php include __DIR__ . '/../layouts/footer.php'; ?>

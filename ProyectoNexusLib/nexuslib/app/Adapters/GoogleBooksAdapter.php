@@ -31,10 +31,40 @@ class GoogleBooksAdapter
         return $this->mapToLibro($data['items'][0], $isbn);
     }
 
-    public function buscarGeneral(string $termino): array
+    public function buscarPorVolumeId(string $volumeId): ?Libro
     {
         $apiKey = $_ENV['GOOGLE_BOOKS_API_KEY'] ?? '';
-        $url = "https://www.googleapis.com/books/v1/volumes?q=" . urlencode($termino) . "&maxResults=10&key=" . $apiKey;
+        $url = "https://www.googleapis.com/books/v1/volumes/" . urlencode($volumeId) . "?key=" . $apiKey;
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        $response = curl_exec($ch);
+        curl_close($ch);
+
+        if ($response === false) {
+            return null;
+        }
+
+        $data = json_decode($response, true);
+
+        if (!is_array($data) || empty($data['volumeInfo'])) {
+            return null;
+        }
+
+        return $this->mapToLibro($data);
+    }
+
+    public function buscarGeneral(string $termino, int $maxResults = 10, int $startIndex = 0): array
+    {
+        $maxResults = max(1, min(40, $maxResults));
+        $startIndex = max(0, $startIndex);
+        $apiKey = $_ENV['GOOGLE_BOOKS_API_KEY'] ?? '';
+        $url = "https://www.googleapis.com/books/v1/volumes?q=" . urlencode($termino)
+            . "&maxResults=" . $maxResults
+            . "&startIndex=" . $startIndex
+            . "&key=" . $apiKey;
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
@@ -68,10 +98,14 @@ class GoogleBooksAdapter
 
     private function mapToLibro(array $item, string $fallbackIsbn = ''): Libro
     {
-        $volumeInfo = is_array($item['volumeInfo'] ?? null) ? $item['volumeInfo'] : [];
+        $volumeInfo = is_array($item['volumeInfo'] ?? $item ?? null) ? ($item['volumeInfo'] ?? $item) : [];
+        $accessInfo = is_array($item['accessInfo'] ?? null) ? $item['accessInfo'] : [];
         $authors = $volumeInfo['authors'] ?? [];
         $categories = $volumeInfo['categories'] ?? [];
         $imageLinks = $volumeInfo['imageLinks'] ?? [];
+        $description = isset($volumeInfo['description']) ? (string) $volumeInfo['description'] : null;
+        $pageCount = isset($volumeInfo['pageCount']) ? (int) $volumeInfo['pageCount'] : null;
+        $embeddable = isset($accessInfo['embeddable']) ? (bool) $accessInfo['embeddable'] : false;
 
         $autor = 'Autor desconocido';
         if (is_array($authors) && $authors !== []) {
@@ -80,7 +114,7 @@ class GoogleBooksAdapter
             $autor = $authors;
         }
 
-        $categoria = 'General';
+        $categoria = null;
         if (is_array($categories) && isset($categories[0]) && $categories[0] !== '') {
             $categoria = (string) $categories[0];
         } elseif (is_string($categories) && $categories !== '') {
@@ -116,7 +150,12 @@ class GoogleBooksAdapter
             isbn: $isbn,
             categoria: $categoria,
             digital_link: isset($volumeInfo['infoLink']) ? (string) $volumeInfo['infoLink'] : null,
-            portada_url: $portadaUrl
+            portada_url: $portadaUrl,
+            descripcion: $description,
+            num_paginas: $pageCount,
+            categorias: is_array($categories) ? $categories : ($categories !== [] ? [$categories] : null),
+            embeddable: $embeddable,
+            fuente_lectura: 'google'
         );
     }
 }

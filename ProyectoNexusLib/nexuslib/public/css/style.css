@@ -1,118 +1,610 @@
-/* Modern book card styles */
+/* =========================================
+   NEXUSLIB 2.0 - PREMIUM DARK UI
+   Inspirado en: El Libro Total
+   ========================================= */
+
+:root {
+    --bg-body: #0f172a;
+    --bg-navbar: #1e293b;
+    --bg-card: rgba(30, 41, 59, 0.4);
+    --accent-cyan: #22d3ee;
+    --text-primary: #f8fafc;    /* Blanco para Autores */
+    --text-secondary: #94a3b8;  /* Gris para Años/Detalles */
+    --border-ui: rgba(255, 255, 255, 0.1);
+}
+
+/* --- Base del Sitio --- */
+html, body {
+    background-color: var(--bg-body) !important;
+    color: var(--text-primary) !important;
+    font-family: 'Inter', sans-serif;
+    overflow-x: hidden;
+    min-height: 100vh;
+}
+
+/* --- Navegación Superior --- */
+.navbar-nexus {
+    background-color: var(--bg-navbar) !important;
+    border-bottom: 1px solid var(--border-ui);
+    padding: 0.7rem 1.5rem;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.navbar-brand {
+    font-weight: 800;
+    color: var(--text-primary) !important;
+}
+
+/* --- Search Wrapper Styles --- */
+.search-wrapper {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    padding: 5px 15px;
+    transition: all 0.3s ease;
+}
+
+.search-wrapper:focus-within {
+    border-color: var(--accent-cyan);
+    box-shadow: 0 0 12px rgba(34, 211, 238, 0.3);
+}
+
+.search-btn {
+    background: transparent !important;
+    border: none !important;
+    color: var(--text-secondary) !important;
+    padding: 5px 8px !important;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.search-wrapper:focus-within .search-btn {
+    color: var(--accent-cyan) !important;
+}
+
+#liveSearch {
+    border: none !important;
+    background: none !important;
+    color: white !important;
+    flex: 1;
+}
+
+#liveSearch::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.search-results-overlay {
+    position: absolute;
+    top: 110%;
+    left: 0;
+    right: 0;
+    background: #1e293b;
+    border: 1px solid var(--border-ui);
+    border-radius: 12px;
+    z-index: 1050;
+    max-height: 400px;
+    overflow-y: auto;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+    display: none;
+}
+
+/* --- Secciones de Categoría --- */
+.category-section {
+    position: relative;
+    padding: 1.5rem 0;
+}
+
+.category-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding: 0 10px;
+}
+
+.category-title {
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+/* --- Carrusel Estilo Netflix --- */
+.category-section, .category-row, .search-results-row {
+    position: relative !important;
+    padding: 10px 0;
+}
+
+.books-scroll, .scroll-row, .carousel-container {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap: 20px;
+    padding: 10px 50px 30px 50px;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+}
+
+.books-scroll::-webkit-scrollbar { 
+    display: none; 
+}
+
+.prev, .next {
+    position: absolute;
+    top: 50px; /* Alineado con la parte superior de las portadas */
+    bottom: 40px; /* Alineado con la parte inferior de las portadas */
+    width: 45px;
+    background: rgba(0, 0, 0, 0.6);
+    color: #22d3ee;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    cursor: pointer;
+    opacity: 0;
+    transition: all 0.3s ease;
+    pointer-events: none;
+    font-size: 1.5rem;
+}
+
+.prev { 
+    left: 0; 
+    border-radius: 0 8px 8px 0; 
+}
+
+.next { 
+    right: 0; 
+    border-radius: 8px 0 0 8px; 
+}
+
+.category-section:hover .prev, .category-section:hover .next,
+.category-row:hover .prev, .category-row:hover .next {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.prev:hover, .next:hover { 
+    background: rgba(0, 0, 0, 0.8); 
+    color: #fff; 
+}
+
+.arrow-hidden {
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+/* --- Tarjetas de Libro --- */
+.books-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 20px;
+    align-items: start;
+}
+
 .book-card {
-	transition: transform 0.2s, box-shadow 0.2s;
+    flex: 0 0 145px; /* Ancho fijo para no encogerse */
+    width: 145px;
+    min-width: 145px;
+    max-width: 145px;
+    height: auto;
+    min-height: 0;
+    max-height: none;
+    display: flex;
+    flex-direction: column;
+    background: transparent;
+    border: none;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
 }
 
 .book-card:hover {
-	transform: translateY(-5px);
-	box-shadow: 0 0.75rem 1.5rem rgba(0, 0, 0, 0.12);
+    transform: scale(1.06);
 }
 
-.text-truncate-2 {
-	display: -webkit-box;
-	line-clamp: 2;
-	-webkit-line-clamp: 2;
-	-webkit-box-orient: vertical;
-	overflow: hidden;
-	text-overflow: ellipsis;
+.book-cover {
+    width: 145px;
+    height: 200px;
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    margin-bottom: 2px;
+    background: #1e293b;
 }
 
-.badge-local,
-.badge-digital {
-	display: inline-flex;
-	align-items: center;
-	justify-content: center;
-	padding: 0.45rem 0.7rem;
-	border-radius: 999px;
-	font-weight: 600;
-	font-size: 0.72rem;
-	letter-spacing: 0.02em;
-	line-height: 1;
-	box-shadow: 0 0.25rem 0.6rem rgba(0, 0, 0, 0.08);
-	color: #fff;
+.book-cover img {
+    display: block;
+    width: 100%;
+    height: 200px;
+    min-height: 200px;
+    max-height: 200px;
+    object-fit: cover;
 }
 
-.badge-local {
-	background-color: #198754;
-}
-
-.badge-digital {
-	background-color: #0dcaf0;
-	color: #0f172a;
-}
-
-
-.book-card {
-    min-height: 180px;
-    margin-bottom: 1rem;
-    background: #fff;
-    border-radius: 8px;
-	cursor: default;
-}
-
-
-.book-card img {
-    border-right: 1px solid #eee;
-    max-height: 220px;
-}
-
-.badge-container {
-    position: absolute;
-    top: 10px;
-    right: 10px;
+/* Jerarquía de Texto (Igual al Video) */
+.book-card-body {
+    padding: 0 2px;
     display: flex;
-    gap: 5px;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 0;
+    height: 2.8em;
+    overflow: hidden;
 }
 
-.btn-preview {
-	background-color: #0dcaf0;
-	color: #fff;
-	border: none;
-	padding: 0.5rem 1.5rem;
-	display: inline-flex;
-	align-items: center;
-	justify-content: center;
-	gap: 8px;
-	transition: background-color 0.2s ease, box-shadow 0.2s ease;
+.book-author {
+    color: var(--text-primary);
+    font-size: 0.82rem;
+    font-weight: 500;
+    display: block;
+    line-height: 1.4;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin: 0;
 }
 
-.btn-preview:hover {
-	background-color: #0bacce;
-	color: #fff;
-	box-shadow: 0 0.35rem 0.85rem rgba(13, 202, 240, 0.35);
+.book-cat-label {
+    color: var(--accent-cyan);
+    font-size: 0.75rem;
+    display: block;
+    line-height: 1.4;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-.filter-bar .form-select {
-	width: 220px;
-	max-width: 100%;
-	border-color: #dee2e6;
-	padding-top: 0.55rem;
-	padding-bottom: 0.55rem;
-	padding-left: 0.9rem;
-	padding-right: 2.2rem;
-	transition: border-color 0.2s ease, box-shadow 0.2s ease;
+.book-year {
+    color: var(--text-secondary);
+    font-size: 0.7rem;
+    display: block;
+    line-height: 1.4;
+    margin-top: 1px;
 }
 
-.filter-bar .form-select:hover {
-	border-color: #cfd4da;
-	box-shadow: 0 0.1rem 0.35rem rgba(0, 0, 0, 0.06);
+/* --- Badges Flotantes --- */
+.badge-status {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    padding: 3px 6px;
+    border-radius: 4px;
+    font-size: 0.6rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    z-index: 5;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
 }
 
-.filter-bar .form-select:focus {
-	border-color: #0dcaf0;
-	box-shadow: 0 0 0 0.2rem rgba(13, 202, 240, 0.25);
+.badge-digital { background: var(--accent-cyan); color: #0f172a; }
+.badge-local { background: #10b981; color: white; }
+
+/* --- Utilidades --- */
+.text-cyan { color: var(--accent-cyan) !important; }
+
+@media (max-width: 768px) {
+    .scroll-row { overflow-x: auto; }
+    .nav-btn { display: none; }
+    .book-card {
+        flex: 0 0 130px;
+        width: 130px;
+        min-width: 130px;
+        max-width: 130px;
+    }
 }
 
-.filter-bar .form-check-input {
-	transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+/* Link wrapper for book cards: preserve text color, remove underline, use pointer */
+.book-card-link,
+.book-card-link:link,
+.book-card-link:visited,
+.book-card-link:hover,
+.book-card-link:active {
+    text-decoration: none !important;
+    color: inherit !important;
+    cursor: pointer;
 }
 
-.filter-bar .form-check-input:focus {
-	border-color: #0dcaf0;
-	box-shadow: 0 0 0 0.2rem rgba(13, 202, 240, 0.25);
+/* Ensure anchor-wrapped cards still show pointer when hovering the card area */
+.book-card-link .book-card {
+    cursor: pointer;
 }
 
-.filter-bar .form-check-input:checked {
-	background-color: #0dcaf0;
-	border-color: #0dcaf0;
+/* Details page styles */
+.book-details-card {
+    background: rgba(255,255,255,0.03);
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,0.03);
+}
+
+.detail-cover {
+    width:145px;
+    height:200px;
+    object-fit:cover;
+    border-radius:6px;
+}
+
+.author-name {
+    color: var(--accent-cyan);
+    font-weight: 600;
+    margin: 0;
+}
+
+.book-title {
+    color: #ffffff;
+    font-weight: 800;
+    margin: 0 0 6px 0;
+}
+
+.btn-book-link {
+    background: #007bff;
+    color: #fff;
+    padding: 10px 18px;
+    border-radius: 10px;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+}
+
+.btn-related {
+    background: rgba(0,0,0,0.5);
+    color: #fff;
+    padding: 10px 16px;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.08);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+}
+
+/* Internal reader button - vibrant blue */
+.btn-read {
+    background: #007bff;
+    color: #fff;
+    padding: 10px 18px;
+    border-radius: 10px;
+    border: none;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-read:hover {
+    background: #0056b3;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+}
+
+/* Google Books external link - soft orange-red */
+.btn-google {
+    background: #e67e22;
+    color: #fff;
+    padding: 10px 18px;
+    border-radius: 10px;
+    border: none;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-google:hover {
+    background: #d35400;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(230, 126, 34, 0.3);
+}
+
+.btn-read i, .btn-google i {
+    margin-right: 10px; /* Espaciado entre icono y texto */
+}
+
+/* Disabled button state */
+.btn-disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    filter: grayscale(1);
+    pointer-events: none;
+}
+
+.book-description {
+    max-width: 800px;
+    color: #cbd5e1;
+    line-height: 1.6;
+    margin: 0 auto;
+}
+
+/* Clamp to 2 lines by default and allow toggle by removing .clamped */
+.book-description.clamped {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+}
+
+.toggle-desc-btn {
+    background: transparent;
+    color: #22d3ee;
+    border: none;
+    font-weight: 700;
+    cursor: pointer;
+    padding: 6px 8px;
+}
+.toggle-desc-btn:focus { outline: none; }
+
+.related-title {
+    color: #ffffff;
+    font-size: 1.05rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+/* Category badge styling for details view */
+.book-details-card .badge {
+    background: rgba(34, 211, 238, 0.06) !important;
+    color: #22d3ee !important;
+    font-size: 0.95rem !important;
+    padding: 6px 10px !important;
+    border-radius: 8px !important;
+    font-weight: 600 !important;
+    border: 1px solid rgba(34, 211, 238, 0.10) !important;
+}
+
+.book-details-card .badge.bg-secondary,
+.book-details-card .badge.text-dark {
+    background: transparent !important;
+    color: #22d3ee !important;
+}
+
+/* --- Estilos del Visor de Google Books --- */
+#viewerCanvas {
+    margin: 30px auto;
+    display: block;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    border: 1px solid rgba(255,255,255,0.1);
+    max-width: 900px;
+    width: 95%;
+    background-color: #fff; /* asegura contraste con el contenido embebido */
+}
+
+/* Reader window wrapper and toolbar */
+.reader-container {
+    margin: 30px auto;
+    max-width: 920px;
+    width: 96%;
+    background: transparent;
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+}
+
+.reader-toolbar {
+    background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+    backdrop-filter: blur(6px);
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.03);
+}
+
+.reader-toolbar .reader-title {
+    color: var(--text-primary);
+    font-weight: 700;
+    font-size: 1rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 85%;
+}
+
+.reader-toolbar .btn-close {
+    background: rgba(0,0,0,0.5);
+    color: #fff;
+    border: none;
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    cursor: pointer;
+}
+
+.reader-toolbar .btn-close:hover { background: rgba(0,0,0,0.7); }
+
+/* --- Load more button for category lists --- */
+.load-more-container { text-align: center; margin: 1.5rem 0; }
+.load-more-btn {
+    background: linear-gradient(90deg, var(--accent-cyan), #06b6d4);
+    color: #06202a;
+    padding: 12px 28px;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 1rem;
+    border: none;
+    display: inline-block;
+    text-decoration: none;
+    box-shadow: 0 6px 18px rgba(34,211,238,0.12);
+    transition: all 0.18s ease;
+}
+.load-more-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(34,211,238,0.16);
+}
+.load-more-btn:active { transform: translateY(0); }
+
+/* --- Dropdown Menu Styles --- */
+.dropdown-menu {
+    background: #0b1e2d;
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    padding: 8px 0;
+}
+
+.dropdown-menu .dropdown-item {
+    color: #e8f0f7;
+    padding: 12px 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    display: block;
+    transition: all 0.2s ease;
+    font-weight: 500;
+}
+
+.dropdown-menu .dropdown-item:last-child {
+    border-bottom: none;
+}
+
+.dropdown-menu .dropdown-item:hover {
+    background: rgba(255,255,255,0.05);
+    color: var(--accent-cyan);
+}
+
+.dropdown-menu .dropdown-item.active {
+    background: rgba(255,255,255,0.08);
+    color: var(--accent-cyan);
+}
+
+/* Elimina la flecha automática (caret) de los dropdowns */
+.dropdown-toggle::after {
+    display: none !important;
+}
+
+/* Dropdown button styling */
+.navbar-nexus .dropdown-toggle {
+    background: transparent;
+    border: none;
+    color: var(--text-primary) !important;
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.navbar-nexus .dropdown-toggle:hover {
+    background: rgba(255,255,255,0.08);
+}
+
+@media (max-width: 768px) {
+    .load-more-btn { width: 90%; padding: 12px; }
 }

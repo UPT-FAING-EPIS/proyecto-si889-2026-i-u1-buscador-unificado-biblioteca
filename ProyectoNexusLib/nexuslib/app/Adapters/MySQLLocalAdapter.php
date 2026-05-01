@@ -108,8 +108,9 @@ class MySQLLocalAdapter
         ];
     }
 
-	public function buscarGeneral(string $termino): ?array
+	public function buscarGeneral(string $termino, int $limit = 10): ?array
 	{
+		$limit = max(1, min(40, $limit));
 		$sql = 'SELECT
 					l.id_libro,
 					l.titulo,
@@ -128,7 +129,7 @@ class MySQLLocalAdapter
 				WHERE l.titulo LIKE :termino_like
 				   OR l.autor LIKE :termino_like
 				   OR l.isbn = :termino_exacto
-				LIMIT 10';
+				LIMIT ' . $limit;
 
 		$stmt = $this->connection->prepare($sql);
 		$stmt->bindValue(':termino_like', '%' . $termino . '%');
