@@ -1,6 +1,6 @@
 # 💻 Proyecto Sistema de Buscador Unificado de Recursos para Bibliotecas Físicas y Virtuales (NexusLib)
 
-**NexusLib** es un buscador unificado diseñado para centralizar la consulta de material bibliográfico de la Universidad Privada de Tacna (UPT), integrando el inventario físico local y la Google Books API.
+**NexusLib** es una plataforma de búsqueda avanzada diseñada para centralizar la consulta de recursos bibliográficos, integrando catálogos de inventario físico y repositorios virtuales en una interfaz única y eficiente. Su arquitectura permite gestionar colecciones locales mientras ofrece acceso a vastas fuentes de información digital bajo un entorno unificado.
 
 ---
 
