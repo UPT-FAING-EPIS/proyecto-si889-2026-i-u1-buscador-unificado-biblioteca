@@ -4,6 +4,12 @@
 
 ---
 
+### 🌐 Enlace de Despliegue
+Puedes acceder al sistema desplegado a través del siguiente enlace:
+👉 **[http://nexuslib.ddns.net](http://nexuslib.ddns.net)**
+
+---
+
 ## 👨‍💻 Integrantes:
 
 - Hurtado Ortiz, Leandro (2015052384)
