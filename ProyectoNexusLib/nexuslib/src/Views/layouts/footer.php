@@ -2,7 +2,7 @@
 <footer class="footer mt-5 py-4 border-top border-secondary bg-dark text-secondary">
     <div class="container text-center">
         <p class="mb-1 small fw-bold text-uppercase" style="letter-spacing: 2px;">NexusLib</p>
-        <small>© 2026 - Facultad de Ingeniería UPT</small>
+        <small>© 2026</small>
     </div>
 </footer>
 

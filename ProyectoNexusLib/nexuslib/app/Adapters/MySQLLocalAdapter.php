@@ -62,6 +62,51 @@ class MySQLLocalAdapter
 		];
 	}
 
+	public function buscarPorId(int|string $id): ?array
+	{
+		$sql = 'SELECT
+					l.id_libro,
+					l.titulo,
+					l.autor,
+					l.isbn,
+					l.categoria,
+					l.digital_link,
+					l.portada_url,
+					i.id_inventario,
+					i.id_libro AS inventario_id_libro,
+					i.piso,
+					i.estante,
+					i.stock
+				FROM libros l
+				INNER JOIN inventario i ON i.id_libro = l.id_libro
+				WHERE l.id_libro = :id_libro
+				LIMIT 1';
+
+		$stmt = $this->connection->prepare($sql);
+		$stmt->bindValue(':id_libro', (int) $id);
+		$stmt->execute();
+
+		$row = $stmt->fetch();
+
+		if ($row === false) {
+			return null;
+		}
+
+		$libro = Libro::fromArray($row);
+		$inventario = new Inventario(
+			id_inventario: (int) $row['id_inventario'],
+			id_libro: (int) $row['inventario_id_libro'],
+			piso: (string) $row['piso'],
+			estante: (string) $row['estante'],
+			stock: (int) $row['stock']
+		);
+
+		return [
+			'libro' => $libro,
+			'inventario' => $inventario,
+		];
+	}
+
     public function buscarPorAutor(string $autor): ?array
     {
         $sql = 'SELECT 
@@ -108,6 +153,59 @@ class MySQLLocalAdapter
         ];
     }
 
+	public function buscarPorCategoriaExacta(string $categoria, int $limit = 20): array
+	{
+		$limit = max(1, min(40, $limit));
+		$sql = 'SELECT
+					l.id_libro,
+					l.titulo,
+					l.autor,
+					l.isbn,
+					l.categoria,
+					l.digital_link,
+					l.portada_url,
+					i.id_inventario,
+					i.id_libro AS inventario_id_libro,
+					i.piso,
+					i.estante,
+					i.stock
+				FROM libros l
+				INNER JOIN inventario i ON i.id_libro = l.id_libro
+				WHERE TRIM(l.categoria) = :categoria
+				ORDER BY l.titulo ASC
+				LIMIT ' . $limit;
+
+		$stmt = $this->connection->prepare($sql);
+		$stmt->bindValue(':categoria', trim($categoria));
+		$stmt->execute();
+
+		$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+		if ($rows === []) {
+			return [];
+		}
+
+		$resultados = [];
+
+		foreach ($rows as $row) {
+			$libro = Libro::fromArray($row);
+			$inventario = new Inventario(
+				id_inventario: (int) $row['id_inventario'],
+				id_libro: (int) $row['inventario_id_libro'],
+				piso: (string) $row['piso'],
+				estante: (string) $row['estante'],
+				stock: (int) $row['stock']
+			);
+
+			$resultados[] = [
+				'libro' => $libro,
+				'inventario' => $inventario,
+			];
+		}
+
+		return $resultados;
+	}
+
 	public function buscarGeneral(string $termino, int $limit = 10): ?array
 	{
 		$limit = max(1, min(40, $limit));
@@ -140,6 +238,114 @@ class MySQLLocalAdapter
 
 		if ($rows === []) {
 			return null;
+		}
+
+		$resultados = [];
+
+		foreach ($rows as $row) {
+			$libro = Libro::fromArray($row);
+
+			$inventario = new Inventario(
+				id_inventario: (int) $row['id_inventario'],
+				id_libro: (int) $row['inventario_id_libro'],
+				piso: (string) $row['piso'],
+				estante: (string) $row['estante'],
+				stock: (int) $row['stock']
+			);
+
+			$resultados[] = [
+				'libro' => $libro,
+				'inventario' => $inventario,
+			];
+		}
+
+		return $resultados;
+	}
+
+	public function searchByTitle(string $query, int $limit = 20): array
+	{
+		$limit = max(1, min(40, $limit));
+		$sql = 'SELECT
+					l.id_libro,
+					l.titulo,
+					l.autor,
+					l.isbn,
+					l.categoria,
+					l.digital_link,
+					l.portada_url,
+					i.id_inventario,
+					i.id_libro AS inventario_id_libro,
+					i.piso,
+					i.estante,
+					i.stock
+				FROM libros l
+				INNER JOIN inventario i ON i.id_libro = l.id_libro
+				WHERE l.titulo LIKE :query
+				ORDER BY l.titulo ASC
+				LIMIT ' . $limit;
+
+		$stmt = $this->connection->prepare($sql);
+		$stmt->bindValue(':query', '%' . $query . '%');
+		$stmt->execute();
+
+		$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+		if ($rows === []) {
+			return [];
+		}
+
+		$resultados = [];
+
+		foreach ($rows as $row) {
+			$libro = Libro::fromArray($row);
+
+			$inventario = new Inventario(
+				id_inventario: (int) $row['id_inventario'],
+				id_libro: (int) $row['inventario_id_libro'],
+				piso: (string) $row['piso'],
+				estante: (string) $row['estante'],
+				stock: (int) $row['stock']
+			);
+
+			$resultados[] = [
+				'libro' => $libro,
+				'inventario' => $inventario,
+			];
+		}
+
+		return $resultados;
+	}
+
+	public function searchByAuthor(string $query, int $limit = 20): array
+	{
+		$limit = max(1, min(40, $limit));
+		$sql = 'SELECT
+					l.id_libro,
+					l.titulo,
+					l.autor,
+					l.isbn,
+					l.categoria,
+					l.digital_link,
+					l.portada_url,
+					i.id_inventario,
+					i.id_libro AS inventario_id_libro,
+					i.piso,
+					i.estante,
+					i.stock
+				FROM libros l
+				INNER JOIN inventario i ON i.id_libro = l.id_libro
+				WHERE l.autor LIKE :query
+				ORDER BY l.autor ASC, l.titulo ASC
+				LIMIT ' . $limit;
+
+		$stmt = $this->connection->prepare($sql);
+		$stmt->bindValue(':query', '%' . $query . '%');
+		$stmt->execute();
+
+		$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+		if ($rows === []) {
+			return [];
 		}
 
 		$resultados = [];

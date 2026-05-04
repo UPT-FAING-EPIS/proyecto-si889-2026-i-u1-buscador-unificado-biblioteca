@@ -53,7 +53,7 @@ class GoogleBooksAdapter
             return null;
         }
 
-        return $this->mapToLibro($data);
+        return $this->mapToLibro($data, '', (string) ($data['id'] ?? $volumeId));
     }
 
     public function buscarGeneral(string $termino, int $maxResults = 10, int $startIndex = 0): array
@@ -96,7 +96,7 @@ class GoogleBooksAdapter
         return $libros;
     }
 
-    private function mapToLibro(array $item, string $fallbackIsbn = ''): Libro
+    private function mapToLibro(array $item, string $fallbackIsbn = '', ?string $fallbackGoogleId = null): Libro
     {
         $volumeInfo = is_array($item['volumeInfo'] ?? $item ?? null) ? ($item['volumeInfo'] ?? $item) : [];
         $accessInfo = is_array($item['accessInfo'] ?? null) ? $item['accessInfo'] : [];
@@ -155,7 +155,9 @@ class GoogleBooksAdapter
             num_paginas: $pageCount,
             categorias: is_array($categories) ? $categories : ($categories !== [] ? [$categories] : null),
             embeddable: $embeddable,
-            fuente_lectura: 'google'
+            fuente_lectura: 'google',
+            google_id: (string) ($item['id'] ?? $fallbackGoogleId ?? ''),
+            origen: 'google'
         );
     }
 }

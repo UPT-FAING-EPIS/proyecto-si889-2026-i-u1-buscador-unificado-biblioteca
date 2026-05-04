@@ -8,6 +8,18 @@ use App\Models\Libro;
 
 class UnificationService
 {
+	private const MAPEO_CATEGORIAS = [
+		'Biografía' => 'biography',
+		'Ciencia ficción' => 'science fiction',
+		'Cuentos' => 'short stories',
+		'Diccionarios' => 'dictionaries',
+		'Ensayos' => 'essays',
+		'Filosofía' => 'philosophy',
+		'Historia' => 'history',
+		'Novelas' => 'fiction',
+		'Poesía' => 'poetry'
+	];
+
 	public function __construct(
 		private MySQLLocalAdapter $localAdapter,
 		private GoogleBooksAdapter $googleBooksAdapter
@@ -36,6 +48,51 @@ class UnificationService
 		return $this->localAdapter->buscarPorAutor($autor);
 	}
 
+	public function getCombinedBooksByCategory(string $categoria, int $limit = 20): array
+	{
+		$limit = max(1, min(40, $limit));
+		$categoria = $this->limpiarCategoria($categoria);
+		$terminoGoogle = self::MAPEO_CATEGORIAS[$categoria] ?? $categoria;
+
+		$resultados = [];
+		$librosLocales = $this->localAdapter->buscarPorCategoriaExacta($categoria, $limit);
+
+		foreach ($librosLocales as $item) {
+			$libro = $item['libro'] ?? null;
+			if (!$libro instanceof Libro) {
+				continue;
+			}
+
+			$libro->origen = 'local';
+			$resultados[] = [
+				'libro' => $libro,
+				'inventario' => $item['inventario'] ?? null,
+			];
+		}
+
+		$localCount = count($resultados);
+		$faltantes = max(0, $limit - $localCount);
+
+		if ($faltantes > 0) {
+			$queryGoogle = 'subject:"' . $terminoGoogle . '"';
+			$librosGoogle = $this->googleBooksAdapter->buscarGeneral($queryGoogle, $faltantes, 0);
+
+			foreach ($librosGoogle as $libroGoogle) {
+				if (!$libroGoogle instanceof Libro) {
+					continue;
+				}
+
+				$libroGoogle->origen = 'google';
+				$resultados[] = [
+					'libro' => $libroGoogle,
+					'inventario' => null,
+				];
+			}
+		}
+
+		return array_slice($resultados, 0, $limit);
+	}
+
 	public function buscarPorCategoria(string $termino, int $limit = 10, int $startIndex = 0): array
 	{
 		$limit = max(1, min(40, $limit));
@@ -53,6 +110,22 @@ class UnificationService
 		]);
 	}
 
+	private function limpiarCategoria(string $categoria): string
+	{
+		$categoria = trim(preg_replace('/\s+/', ' ', $categoria) ?? $categoria);
+
+		return $categoria;
+	}
+
+	private function normalizarTexto(string $texto): string
+	{
+		$texto = trim($texto);
+		$textoMinuscula = mb_strtolower($texto, 'UTF-8');
+		$textoAscii = iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $textoMinuscula);
+
+		return $textoAscii === false ? $textoMinuscula : strtolower($textoAscii);
+	}
+
 	public function buscarPorAutor(string $query, int $limit = 20, int $startIndex = 0): array
 	{
 		$limit = max(1, min(40, $limit));
@@ -63,11 +136,60 @@ class UnificationService
 			return [];
 		}
 
-		return $this->busquedaInteligente('inauthor:"' . $query . '"', [
-			'origen' => 'todos',
-			'limit' => $limit,
-			'start_index' => $startIndex,
-		]);
+		$resultados = [];
+		$isFirstPage = ($startIndex === 0);
+
+		if ($isFirstPage) {
+			$resultadosLocales = $this->localAdapter->searchByAuthor($query, $limit);
+
+			if ($resultadosLocales !== [] && $resultadosLocales !== null) {
+				foreach ($resultadosLocales as &$item) {
+					$libro = $item['libro'] ?? null;
+					if ($libro instanceof Libro) {
+						$libro->origen = 'local';
+					}
+				}
+				unset($item);
+				$resultados = array_merge($resultados, $resultadosLocales);
+			}
+
+			$localCount = count($resultados);
+			$faltantes = max(0, $limit - $localCount);
+
+			if ($faltantes > 0) {
+				$queryGoogle = 'inauthor:"' . $query . '"';
+				$librosGoogle = $this->googleBooksAdapter->buscarGeneral($queryGoogle, $faltantes, 0);
+
+				foreach ($librosGoogle as $libroGoogle) {
+					if (!$libroGoogle instanceof Libro) {
+						continue;
+					}
+
+					$libroGoogle->origen = 'google';
+					$resultados[] = [
+						'libro' => $libroGoogle,
+						'inventario' => null,
+					];
+				}
+			}
+		} else {
+			$queryGoogle = 'inauthor:"' . $query . '"';
+			$librosGoogle = $this->googleBooksAdapter->buscarGeneral($queryGoogle, $limit, $startIndex);
+
+			foreach ($librosGoogle as $libroGoogle) {
+				if (!$libroGoogle instanceof Libro) {
+					continue;
+				}
+
+				$libroGoogle->origen = 'google';
+				$resultados[] = [
+					'libro' => $libroGoogle,
+					'inventario' => null,
+				];
+			}
+		}
+
+		return array_slice($resultados, 0, $limit);
 	}
 
 	public function buscarPorTitulo(string $query, int $limit = 20, int $startIndex = 0): array
@@ -80,11 +202,60 @@ class UnificationService
 			return [];
 		}
 
-		return $this->busquedaInteligente('intitle:"' . $query . '"', [
-			'origen' => 'todos',
-			'limit' => $limit,
-			'start_index' => $startIndex,
-		]);
+		$resultados = [];
+		$isFirstPage = ($startIndex === 0);
+
+		if ($isFirstPage) {
+			$resultadosLocales = $this->localAdapter->searchByTitle($query, $limit);
+
+			if ($resultadosLocales !== [] && $resultadosLocales !== null) {
+				foreach ($resultadosLocales as &$item) {
+					$libro = $item['libro'] ?? null;
+					if ($libro instanceof Libro) {
+						$libro->origen = 'local';
+					}
+				}
+				unset($item);
+				$resultados = array_merge($resultados, $resultadosLocales);
+			}
+
+			$localCount = count($resultados);
+			$faltantes = max(0, $limit - $localCount);
+
+			if ($faltantes > 0) {
+				$queryGoogle = 'intitle:"' . $query . '"';
+				$librosGoogle = $this->googleBooksAdapter->buscarGeneral($queryGoogle, $faltantes, 0);
+
+				foreach ($librosGoogle as $libroGoogle) {
+					if (!$libroGoogle instanceof Libro) {
+						continue;
+					}
+
+					$libroGoogle->origen = 'google';
+					$resultados[] = [
+						'libro' => $libroGoogle,
+						'inventario' => null,
+					];
+				}
+			}
+		} else {
+			$queryGoogle = 'intitle:"' . $query . '"';
+			$librosGoogle = $this->googleBooksAdapter->buscarGeneral($queryGoogle, $limit, $startIndex);
+
+			foreach ($librosGoogle as $libroGoogle) {
+				if (!$libroGoogle instanceof Libro) {
+					continue;
+				}
+
+				$libroGoogle->origen = 'google';
+				$resultados[] = [
+					'libro' => $libroGoogle,
+					'inventario' => null,
+				];
+			}
+		}
+
+		return array_slice($resultados, 0, $limit);
 	}
 
 	public function getBookById(string $id): array|Libro|null
@@ -119,6 +290,11 @@ class UnificationService
 		return null;
 	}
 
+	public function getLocalBookById(int|string $id): ?array
+	{
+		return $this->localAdapter->buscarPorId($id);
+	}
+
 	public function busquedaInteligente(string $termino, array $filtros = []): array
 	{
 		$origen = strtolower((string) ($filtros['origen'] ?? 'todos'));
@@ -127,14 +303,25 @@ class UnificationService
 		$limit = (int) ($filtros['limit'] ?? 10);
 		$limit = max(1, min(40, $limit));
 
+		$startIndex = (int) ($filtros['start_index'] ?? 0);
+		$isFirstPage = ($startIndex === 0);
+
 		$resultados = [];
-		$consultarLocal = !in_array($origen, ['digital', 'digitales'], true);
+		$consultarLocal = !in_array($origen, ['digital', 'digitales'], true) && $isFirstPage;
 		$consultarGoogle = !in_array($origen, ['local', 'fisicos'], true);
 
 		if ($consultarLocal) {
 			$resultadosLocales = $this->localAdapter->buscarGeneral($termino, $limit);
 
 			if ($resultadosLocales !== null && $resultadosLocales !== []) {
+				foreach ($resultadosLocales as &$itemLocal) {
+					$libroLocal = $itemLocal['libro'] ?? null;
+					if ($libroLocal instanceof Libro) {
+						$libroLocal->origen = 'local';
+					}
+				}
+				unset($itemLocal);
+
 				$resultados = array_merge($resultados, $resultadosLocales);
 			}
 		}
@@ -142,8 +329,6 @@ class UnificationService
 		$terminoNormalizado = trim($termino);
 		$esIsbn = ctype_digit($terminoNormalizado)
 			&& (strlen($terminoNormalizado) === 10 || strlen($terminoNormalizado) === 13);
-
-		$startIndex = (int) ($filtros['start_index'] ?? 0);
 
 		if ($consultarGoogle && $esIsbn) {
 			$libroGoogle = $this->googleBooksAdapter->buscarPorIsbn($terminoNormalizado);

@@ -3,12 +3,17 @@
 namespace App\Controllers;
 
 use App\Adapters\GoogleBooksAdapter;
-use App\Adapters\MySQLLocalAdapter;
 use App\Models\Libro;
 use App\Services\UnificationService;
 
 class SearchController
 {
+    public function __construct(
+        private UnificationService $unificationService,
+        private GoogleBooksAdapter $googleBooksAdapter
+    ) {
+    }
+
     public function index(): void
     {
         if (session_status() === PHP_SESSION_NONE) {
@@ -91,6 +96,16 @@ class SearchController
 
             $resultados = $service->busquedaInteligente($termino, $filtros);
 
+            foreach ($resultados as &$resultadoItem) {
+                $libroResultado = $resultadoItem['libro'] ?? null;
+                $inventarioResultado = $resultadoItem['inventario'] ?? null;
+
+                if ($libroResultado instanceof Libro && $inventarioResultado !== null) {
+                    $libroResultado->origen = 'local';
+                }
+            }
+            unset($resultadoItem);
+
             if ($esVistaDetalles && isset($resultados[0])) {
                 $resultado = $resultados[0];
             }
@@ -113,22 +128,47 @@ class SearchController
             ];
 
             foreach ($categoriasPrincipales as $categoria => $categoriaEnIngles) {
-                $terminoCategoria = $modoActual === 'virtual'
-                    ? 'subject:"' . $categoriaEnIngles . '"'
-                    : $categoria;
-
-                $datosHome[$categoria] = $service->busquedaInteligente(
-                    $terminoCategoria,
-                    [
-                        'origen' => $origen,
-                        'limit' => $limiteHome,
-                    ]
-                );
+                $datosHome[$categoria] = $service->getCombinedBooksByCategory($categoria, $limiteHome);
             }
         }
 
         $view = $esVistaDetalles ? 'details/index.php' : 'search/index.php';
         require __DIR__ . "/../../src/Views/$view";
+    }
+
+    public function detailsLocal($id): void
+    {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        $modoActual = $_SESSION['biblioteca_modo'] ?? 'virtual';
+        $id = trim((string) $id);
+
+        if ($id === '') {
+            header('Location: index.php');
+            exit;
+        }
+
+        $service = $this->getUnificationService($modoActual);
+        $resultadoLocal = $service->getLocalBookById((int) $id);
+
+        if ($resultadoLocal === null) {
+            header('Location: index.php');
+            exit;
+        }
+
+        $libro = $resultadoLocal['libro'] ?? null;
+        $inventario = $resultadoLocal['inventario'] ?? null;
+
+        if (!($libro instanceof Libro)) {
+            header('Location: index.php');
+            exit;
+        }
+
+        $libro->origen = 'local';
+
+        require __DIR__ . "/../../src/Views/search/details_local.php";
     }
 
     public function category(?string $modoActual = null): void
@@ -141,29 +181,39 @@ class SearchController
 
         $page = max(1, (int) ($_GET['page'] ?? 1));
         $perPage = 20;
-        $startIndex = ($page - 1) * $perPage;
 
         $nombreCategoria = trim((string) ($_GET['name'] ?? ''));
         if ($nombreCategoria === '') {
             $nombreCategoria = 'Biografía';
         }
 
-        $mapeoCategorias = [
-            'Biografía' => 'Biography',
-            'Ciencia ficción' => 'Science Fiction',
-            'Cuentos' => 'Short Stories',
-            'Diccionarios' => 'Dictionaries',
-            'Ensayos' => 'Essays',
-            'Filosofía' => 'Philosophy',
-            'Historia' => 'History',
-            'Novelas' => 'Novels',
-            'Poesia' => 'Poetry',
-        ];
-
-        $terminoIngles = $mapeoCategorias[$nombreCategoria] ?? $nombreCategoria;
+        $terminoIngles = $this->resolverTerminoGoogleCategoria($nombreCategoria);
 
         $service = $this->getUnificationService($modoActual);
-        $librosRelacionados = $service->buscarPorCategoria($terminoIngles, $perPage, $startIndex);
+        $librosIniciales = $service->getCombinedBooksByCategory($nombreCategoria, $perPage);
+        $localCount = 0;
+
+        foreach ($librosIniciales as $item) {
+            $libro = $item['libro'] ?? null;
+            if ($libro instanceof Libro && ($libro->origen ?? null) === 'local') {
+                $localCount++;
+            }
+        }
+
+        if ($page === 1) {
+            $librosRelacionados = $librosIniciales;
+        } else {
+            $inicioGoogle = max(0, (($page - 1) * $perPage) - $localCount);
+            $librosGoogle = $this->googleBooksAdapter->buscarGeneral('subject:"' . $terminoIngles . '"', $perPage, $inicioGoogle);
+
+            $librosRelacionados = array_map(
+                static fn(Libro $libro): array => [
+                    'libro' => $libro,
+                    'inventario' => null,
+                ],
+                $librosGoogle
+            );
+        }
 
         $isAjax = (int) ($_GET['ajax'] ?? 0) === 1;
 
@@ -176,15 +226,18 @@ class SearchController
                     continue;
                 }
 
-                $linkId = !empty($libro->isbn) ? $libro->isbn : ($libro->id_libro ?? '');
+                $esLocal = ($libro->origen ?? null) === 'local';
+                $linkId = $esLocal ? (string) $libro->id_libro : (string) ($libro->google_id ?: $libro->isbn ?: $libro->id_libro);
+                $linkAction = $esLocal ? 'details_local' : 'details';
                 $titulo = htmlspecialchars($libro->titulo ?? '', ENT_QUOTES, 'UTF-8');
                 $autor = htmlspecialchars($libro->autor ?? '', ENT_QUOTES, 'UTF-8');
                 $portada = htmlspecialchars($libro->portada_url ?? '', ENT_QUOTES, 'UTF-8');
-                $catEsc = urlencode($nombreCategoria);
-
-                echo '<a href="index.php?action=details&id=' . urlencode($linkId) . '" class="text-decoration-none text-reset d-block book-card-link">';
+                $badgeClass = $esLocal ? 'badge-local' : 'badge-digital';
+                $badgeText = $esLocal ? 'En Biblioteca' : 'Digital';
+                echo '<a href="index.php?action=' . $linkAction . '&id=' . urlencode($linkId) . '" class="text-decoration-none text-reset d-block book-card-link">';
                 echo '<div class="book-card">';
                 echo '<div class="book-cover">';
+                echo '<span class="badge-status ' . $badgeClass . '">' . $badgeText . '</span>';
                 if (!empty($portada)) {
                     echo '<img src="' . $portada . '" alt="' . $titulo . '">';
                 } else {
@@ -216,13 +269,18 @@ class SearchController
         $modoActual ??= $_SESSION['biblioteca_modo'] ?? 'virtual';
 
         $query = trim((string) ($_GET['q'] ?? ''));
-        if ($query === '') {
-            $resultadosAutores = [];
-            $resultadosTitulos = [];
-        } else {
+        $resultadosUnificados = [];
+        $resultadosAutores = [];
+        $resultadosTitulos = [];
+
+        if ($query !== '') {
             $service = $this->getUnificationService($modoActual);
-            $resultadosAutores = $service->buscarPorAutor($query, 20);
-            $resultadosTitulos = $service->buscarPorTitulo($query, 20);
+            $resultadosUnificados = $service->busquedaInteligente($query, [
+                'origen' => 'todos',
+                'limit' => 20,
+            ]);
+            $resultadosAutores = $service->buscarPorAutor($query, 20, 0);
+            $resultadosTitulos = $service->buscarPorTitulo($query, 20, 0);
         }
 
         require __DIR__ . "/../../src/Views/search/results.php";
@@ -262,15 +320,20 @@ class SearchController
                     continue;
                 }
 
-                $linkId = !empty($libro->isbn) ? $libro->isbn : ($libro->id_libro ?? '');
+                $esLocal = ($libro->origen ?? null) === 'local';
+                $linkId = $esLocal ? (string) $libro->id_libro : (string) ($libro->google_id ?: $libro->isbn ?: $libro->id_libro);
+                $linkAction = $esLocal ? 'details_local' : 'details';
                 $titulo = htmlspecialchars($libro->titulo ?? '', ENT_QUOTES, 'UTF-8');
                 $autor = htmlspecialchars($libro->autor ?? '', ENT_QUOTES, 'UTF-8');
                 $portada = htmlspecialchars($libro->portada_url ?? '', ENT_QUOTES, 'UTF-8');
                 $categoria = htmlspecialchars($libro->categoria ?? 'General', ENT_QUOTES, 'UTF-8');
+                $badgeClass = $esLocal ? 'badge-local' : 'badge-digital';
+                $badgeText = $esLocal ? 'En Biblioteca' : 'Digital';
 
-                echo '<a href="index.php?action=details&id=' . urlencode($linkId) . '" class="text-decoration-none text-reset d-block book-card-link">';
+                echo '<a href="index.php?action=' . $linkAction . '&id=' . urlencode($linkId) . '" class="text-decoration-none text-reset d-block book-card-link">';
                 echo '<div class="book-card">';
                 echo '<div class="book-cover">';
+                echo '<span class="badge-status ' . $badgeClass . '">' . $badgeText . '</span>';
                 if (!empty($portada)) {
                     echo '<img src="' . $portada . '" alt="' . $titulo . '">';
                 } else {
@@ -328,10 +391,24 @@ class SearchController
 
     private function getUnificationService(string $modo): UnificationService
     {
-        $localAdapter = new MySQLLocalAdapter();
-        $googleAdapter = new GoogleBooksAdapter();
+        return $this->unificationService;
+    }
 
-        return new UnificationService($localAdapter, $googleAdapter);
+    private function resolverTerminoGoogleCategoria(string $nombreCategoria): string
+    {
+        $mapeoCategorias = [
+            'Biografía' => 'Biography',
+            'Ciencia ficción' => 'Science Fiction',
+            'Cuentos' => 'Short Stories',
+            'Diccionarios' => 'Dictionaries',
+            'Ensayos' => 'Essays',
+            'Filosofía' => 'Philosophy',
+            'Historia' => 'History',
+            'Novelas' => 'Novels',
+            'Poesía' => 'Poetry',
+        ];
+
+        return $mapeoCategorias[$nombreCategoria] ?? $nombreCategoria;
     }
 
     private function aplicarFallbackOpenLibrary(Libro $libro): Libro

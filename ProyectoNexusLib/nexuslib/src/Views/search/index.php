@@ -32,19 +32,17 @@ $modoFisico = (isset($_SESSION['biblioteca_modo']) && $_SESSION['biblioteca_modo
                 $libro = $item['libro'] ?? null;
                 $inventario = $item['inventario'] ?? null;
                 if (!($libro instanceof Libro)) continue;
+                $esLocal = ($libro->origen ?? null) === 'local';
+                $linkId = $esLocal ? (string) $libro->id_libro : (string) ($libro->google_id ?: $libro->isbn ?: $libro->id_libro);
+                $linkAction = $esLocal ? 'details_local' : 'details';
+                $badgeClass = $esLocal ? 'badge-local' : 'badge-digital';
+                $badgeText = $esLocal ? 'En Biblioteca' : 'Digital';
             ?>
                 <div class="col">
-                    <?php $linkId = !empty($libro->isbn) ? $libro->isbn : ($libro->id_libro ?? ''); ?>
-                    <a href="index.php?action=details&id=<?= urlencode($linkId) ?>" class="text-decoration-none text-reset d-block book-card-link">
+                    <a href="index.php?action=<?= $linkAction ?>&id=<?= urlencode($linkId) ?>" class="text-decoration-none text-reset d-block book-card-link">
                         <div class="book-card">
-                        <div class="position-relative">
-                            <?php if ($inventario instanceof Inventario): ?>
-                                <span class="badge-status badge-local">Físico</span>
-                            <?php else: ?>
-                                <span class="badge-status badge-digital">Digital</span>
-                            <?php endif; ?>
-
                             <div class="book-cover">
+                                <span class="badge-status <?= $badgeClass ?>"><?= $badgeText ?></span>
                                 <?php if ($libro->portada_url): ?>
                                     <img src="<?= $libro->portada_url ?>" alt="<?= htmlspecialchars($libro->titulo) ?>">
                                 <?php else: ?>
@@ -53,7 +51,6 @@ $modoFisico = (isset($_SESSION['biblioteca_modo']) && $_SESSION['biblioteca_modo
                                     </div>
                                 <?php endif; ?>
                             </div>
-                        </div>
 
                         <div class="book-card-body">
                             <span class="book-author d-block w-100 text-truncate" title="<?= htmlspecialchars($libro->autor) ?>">
@@ -72,7 +69,7 @@ $modoFisico = (isset($_SESSION['biblioteca_modo']) && $_SESSION['biblioteca_modo
     <?php else: ?>
         <div class="welcome-section text-center py-5">
             <h1 class="display-4 fw-bold">Nexus<span class="text-cyan">Lib</span></h1>
-            <p class="text-secondary fs-5">Explora el conocimiento unificado de la Facultad de Ingeniería</p>
+            <!-- <p class="text-secondary fs-5">Explora el conocimiento unificado de la Facultad de Ingeniería</p> -->
         </div>
 
         <?php
@@ -121,11 +118,16 @@ $modoFisico = (isset($_SESSION['biblioteca_modo']) && $_SESSION['biblioteca_modo
                             if (!($libro instanceof Libro)) {
                                 continue;
                             }
-                            $linkId = !empty($libro->isbn) ? $libro->isbn : ($libro->id_libro ?? '');
+                                $esLocal = ($libro->origen ?? null) === 'local';
+                                $linkId = $esLocal ? (string) $libro->id_libro : (string) ($libro->google_id ?: $libro->isbn ?: $libro->id_libro);
+                                $linkAction = $esLocal ? 'details_local' : 'details';
+                                $badgeClass = $esLocal ? 'badge-local' : 'badge-digital';
+                                $badgeText = $esLocal ? 'En Biblioteca' : 'Digital';
                         ?>
-                            <a href="index.php?action=details&id=<?= urlencode($linkId) ?>" class="text-decoration-none text-reset d-block book-card-link">
+                                <a href="index.php?action=<?= $linkAction ?>&id=<?= urlencode($linkId) ?>" class="text-decoration-none text-reset d-block book-card-link">
                                 <div class="book-card">
                                     <div class="book-cover">
+                                            <span class="badge-status <?= $badgeClass ?>"><?= $badgeText ?></span>
                                         <?php if (!empty($libro->portada_url)): ?>
                                             <img src="<?= htmlspecialchars($libro->portada_url) ?>" alt="<?= htmlspecialchars($libro->titulo ?? '') ?>">
                                         <?php else: ?>

@@ -17,7 +17,9 @@ class Libro
 		public readonly array|null $categorias = null,
 		public readonly bool $embeddable = false,
 		public readonly ?string $fuente_lectura = null,
-		public readonly ?string $openlibrary_olid = null
+		public readonly ?string $openlibrary_olid = null,
+		public readonly ?string $google_id = null,
+		public ?string $origen = null
 	) {
 	}
 
@@ -37,6 +39,8 @@ class Libro
 			embeddable: (bool) ($data['embeddable'] ?? false),
 			fuente_lectura: isset($data['fuente_lectura']) ? (string) $data['fuente_lectura'] : null,
 			openlibrary_olid: isset($data['openlibrary_olid']) ? (string) $data['openlibrary_olid'] : null,
+			google_id: isset($data['google_id']) ? (string) $data['google_id'] : null,
+			origen: isset($data['origen']) ? (string) $data['origen'] : null,
 		);
 	}
 }

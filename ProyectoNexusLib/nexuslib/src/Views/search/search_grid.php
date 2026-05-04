@@ -27,11 +27,16 @@ $typeLabel = ($type === 'author') ? 'nombres de autores' : 'títulos de libros';
                 if (!($libro instanceof Libro)) {
                     continue;
                 }
-                $linkId = !empty($libro->isbn) ? $libro->isbn : ($libro->id_libro ?? '');
+                $esLocal = ($libro->origen ?? null) === 'local';
+                $linkId = $esLocal ? (string) $libro->id_libro : (string) ($libro->google_id ?: $libro->isbn ?: $libro->id_libro);
+                $linkAction = $esLocal ? 'details_local' : 'details';
+                $badgeClass = $esLocal ? 'badge-local' : 'badge-digital';
+                $badgeText = $esLocal ? 'En Biblioteca' : 'Digital';
             ?>
-                <a href="index.php?action=details&id=<?= urlencode($linkId) ?>" class="text-decoration-none text-reset d-block book-card-link">
+                <a href="index.php?action=<?= $linkAction ?>&id=<?= urlencode($linkId) ?>" class="text-decoration-none text-reset d-block book-card-link">
                     <div class="book-card">
                         <div class="book-cover">
+                            <span class="badge-status <?= $badgeClass ?>"><?= $badgeText ?></span>
                             <?php if (!empty($libro->portada_url)): ?>
                                 <img src="<?= htmlspecialchars($libro->portada_url) ?>" alt="<?= htmlspecialchars($libro->titulo ?? '') ?>">
                             <?php else: ?>

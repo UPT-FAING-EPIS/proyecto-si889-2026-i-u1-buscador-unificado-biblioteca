@@ -5,13 +5,16 @@ $libroObj = $libro ?? null;
 $libro = $libroObj;
 $librosRelacionados = $librosRelacionados ?? [];
 
-// Prepare categories list
+// Prepare categories list (show only first category for display)
 $cats = [];
+$firstCategory = null;
 if ($libroObj !== null) {
     if (!empty($libroObj->categorias) && is_array($libroObj->categorias)) {
         $cats = $libroObj->categorias;
+        $firstCategory = $cats[0] ?? null;
     } elseif (!empty($libroObj->categoria)) {
         $cats = [$libroObj->categoria];
+        $firstCategory = $libroObj->categoria;
     }
 }
 ?>
@@ -48,25 +51,27 @@ if ($libroObj !== null) {
                         </p>
 
                         <div class="mb-3">
-                            <?php foreach ($cats as $c): ?>
-                                <span class="badge bg-secondary text-dark me-1"><?= htmlspecialchars($c) ?></span>
-                            <?php endforeach; ?>
+                            <?php if ($firstCategory !== null): ?>
+                                <span class="badge bg-secondary text-dark me-1"><?= htmlspecialchars($firstCategory) ?></span>
+                            <?php endif; ?>
                         </div>
 
                         <div class="d-flex align-items-center gap-3">
-                                <button id='open-reader-btn' class='btn-read' data-isbn='<?= $libro->isbn ?>'><i class='fas fa-book-open'></i> Vista Previa</button>
-                                <a href='<?= $libro->digital_link ?>' target='_blank' class='btn-google'><i class='fas fa-external-link-alt'></i> Ver en Google Books</a>
+                            <button id='open-reader-btn' class='btn-read' data-isbn='<?= htmlspecialchars($libro->isbn ?? '') ?>'><i class='fas fa-book-open'></i> Vista Previa</button>
+                            <?php $googleId = $libro->google_id ?? null; $googleHref = $googleId ? 'https://books.google.com/books?id=' . rawurlencode($googleId) : ($libro->digital_link ?? '#'); ?>
+                            <a href="<?= htmlspecialchars($googleHref) ?>" target="_blank" class="btn-google"><i class='fas fa-external-link-alt'></i> Ver en Google Books</a>
                         </div>
                     </div>
                 </div>
             </div>
 
             <div class="mb-4 text-center">
-                <p id="bookDescription" class="book-description clamped mx-auto">
-                    <?= nl2br(htmlspecialchars($libroObj->descripcion ?? 'Sin sinopsis disponible.')) ?>
-                </p>
-                
                 <?php $rawDesc = trim((string) ($libroObj->descripcion ?? '')); ?>
+                <?php $cleanDesc = $rawDesc !== '' ? strip_tags($rawDesc) : 'Sin sinopsis disponible.'; ?>
+                <p id="bookDescription" class="book-description clamped mx-auto">
+                    <?= nl2br(htmlspecialchars($cleanDesc)) ?>
+                </p>
+
                 <?php if ($rawDesc !== ''): ?>
                     <div class="mt-2">
                         <button id="toggleDescription" class="toggle-desc-btn" style="display: none;">▼ Ver más</button>

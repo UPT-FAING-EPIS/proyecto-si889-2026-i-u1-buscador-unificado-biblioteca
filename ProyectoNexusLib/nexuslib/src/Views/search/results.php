@@ -14,12 +14,12 @@ $query = trim((string) ($_GET['q'] ?? ''));
         <p class="text-secondary">Búsqueda: <span class="text-cyan fw-bold"><?= htmlspecialchars($query) ?></span></p>
     </div>
 
-    <!-- Sección Autores -->
+    <!-- Sección Resultados por Autor -->
     <div class="category-section">
         <div class="category-header">
             <div class="d-flex align-items-center">
                 <i class="bi bi-person-badge text-cyan fs-5 me-2"></i>
-                <h3 class="category-title"><?= htmlspecialchars($query) ?> en nombres de autores</h3>
+                <h3 class="category-title">Resultados por Autor</h3>
             </div>
             <a href="index.php?action=search-more&q=<?= urlencode($query) ?>&type=author" class="text-secondary small text-decoration-none">
                 Ver más <i class="bi bi-caret-right-fill"></i>
@@ -29,22 +29,27 @@ $query = trim((string) ($_GET['q'] ?? ''));
         <?php if (empty($resultadosAutores)): ?>
             <div class="alert alert-dark border-secondary text-secondary mx-3 my-3">
                 <i class="bi bi-info-circle me-2"></i>
-                No se encontraron autores para esta búsqueda
+                No se encontraron resultados por autor
             </div>
         <?php else: ?>
             <button class="prev"><i class="fa-solid fa-chevron-left"></i></button>
             <button class="next"><i class="fa-solid fa-chevron-right"></i></button>
-            <div class="books-scroll">
+            <div class="books-scroll" id="carousel-authors">
                 <?php foreach ($resultadosAutores as $item):
                     $libro = $item['libro'] ?? null;
                     if (!($libro instanceof Libro)) {
                         continue;
                     }
-                    $linkId = !empty($libro->isbn) ? $libro->isbn : ($libro->id_libro ?? '');
+                    $esLocal = ($libro->origen ?? null) === 'local';
+                    $linkId = $esLocal ? (string) $libro->id_libro : (string) ($libro->google_id ?: $libro->isbn ?: $libro->id_libro);
+                    $linkAction = $esLocal ? 'details_local' : 'details';
+                    $badgeClass = $esLocal ? 'badge-local' : 'badge-digital';
+                    $badgeText = $esLocal ? 'En Biblioteca' : 'Digital';
                 ?>
-                    <a href="index.php?action=details&id=<?= urlencode($linkId) ?>" class="text-decoration-none text-reset d-block book-card-link">
+                    <a href="index.php?action=<?= $linkAction ?>&id=<?= urlencode($linkId) ?>" class="text-decoration-none text-reset d-block book-card-link">
                         <div class="book-card">
                             <div class="book-cover">
+                                <span class="badge-status <?= $badgeClass ?>"><?= $badgeText ?></span>
                                 <?php if (!empty($libro->portada_url)): ?>
                                     <img src="<?= htmlspecialchars($libro->portada_url) ?>" alt="<?= htmlspecialchars($libro->titulo ?? '') ?>">
                                 <?php else: ?>
@@ -64,12 +69,12 @@ $query = trim((string) ($_GET['q'] ?? ''));
         <?php endif; ?>
     </div>
 
-    <!-- Sección Títulos -->
+    <!-- Sección Resultados por Título -->
     <div class="category-section">
         <div class="category-header">
             <div class="d-flex align-items-center">
                 <i class="bi bi-book text-cyan fs-5 me-2"></i>
-                <h3 class="category-title"><?= htmlspecialchars($query) ?> en títulos de libros</h3>
+                <h3 class="category-title">Resultados por Título</h3>
             </div>
             <a href="index.php?action=search-more&q=<?= urlencode($query) ?>&type=title" class="text-secondary small text-decoration-none">
                 Ver más <i class="bi bi-caret-right-fill"></i>
@@ -79,38 +84,43 @@ $query = trim((string) ($_GET['q'] ?? ''));
         <?php if (empty($resultadosTitulos)): ?>
             <div class="alert alert-dark border-secondary text-secondary mx-3 my-3">
                 <i class="bi bi-info-circle me-2"></i>
-                No se encontraron títulos para esta búsqueda
+                No se encontraron resultados por título
             </div>
         <?php else: ?>
             <button class="prev"><i class="fa-solid fa-chevron-left"></i></button>
             <button class="next"><i class="fa-solid fa-chevron-right"></i></button>
-            <div class="books-scroll">
+            <div class="books-scroll" id="carousel-titles">
                 <?php foreach ($resultadosTitulos as $item):
                     $libro = $item['libro'] ?? null;
                     if (!($libro instanceof Libro)) {
                         continue;
                     }
-                    $linkId = !empty($libro->isbn) ? $libro->isbn : ($libro->id_libro ?? '');
-                    ?>
-                        <a href="index.php?action=details&id=<?= urlencode($linkId) ?>" class="text-decoration-none text-reset d-block book-card-link">
-                            <div class="book-card">
-                                <div class="book-cover">
-                                    <?php if (!empty($libro->portada_url)): ?>
-                                        <img src="<?= htmlspecialchars($libro->portada_url) ?>" alt="<?= htmlspecialchars($libro->titulo ?? '') ?>">
-                                    <?php else: ?>
-                                        <div class="no-cover d-flex align-items-center justify-content-center bg-dark h-100 w-100">
-                                            <i class="bi bi-book text-secondary fs-1"></i>
-                                        </div>
-                                    <?php endif; ?>
-                                </div>
-                                <div class="book-card-body">
-                                    <span class="book-author d-block w-100 text-truncate" title="<?= htmlspecialchars($libro->autor) ?>"><?= htmlspecialchars($libro->autor) ?></span>
-                                    <span class="book-cat-label d-block w-100 text-truncate" title="<?= htmlspecialchars($libro->categoria ?? 'General') ?>"><?= htmlspecialchars($libro->categoria ?? 'General') ?></span>
-                                </div>
+                    $esLocal = ($libro->origen ?? null) === 'local';
+                    $linkId = $esLocal ? (string) $libro->id_libro : (string) ($libro->google_id ?: $libro->isbn ?: $libro->id_libro);
+                    $linkAction = $esLocal ? 'details_local' : 'details';
+                    $badgeClass = $esLocal ? 'badge-local' : 'badge-digital';
+                    $badgeText = $esLocal ? 'En Biblioteca' : 'Digital';
+                ?>
+                    <a href="index.php?action=<?= $linkAction ?>&id=<?= urlencode($linkId) ?>" class="text-decoration-none text-reset d-block book-card-link">
+                        <div class="book-card">
+                            <div class="book-cover">
+                                <span class="badge-status <?= $badgeClass ?>"><?= $badgeText ?></span>
+                                <?php if (!empty($libro->portada_url)): ?>
+                                    <img src="<?= htmlspecialchars($libro->portada_url) ?>" alt="<?= htmlspecialchars($libro->titulo ?? '') ?>">
+                                <?php else: ?>
+                                    <div class="no-cover d-flex align-items-center justify-content-center bg-dark h-100 w-100">
+                                        <i class="bi bi-book text-secondary fs-1"></i>
+                                    </div>
+                                <?php endif; ?>
                             </div>
-                        </a>
-                    <?php endforeach; ?>
-                </div>
+                            <div class="book-card-body">
+                                <span class="book-author d-block w-100 text-truncate" title="<?= htmlspecialchars($libro->autor) ?>"><?= htmlspecialchars($libro->autor) ?></span>
+                                <span class="book-cat-label d-block w-100 text-truncate" title="<?= htmlspecialchars($libro->categoria ?? 'General') ?>"><?= htmlspecialchars($libro->categoria ?? 'General') ?></span>
+                            </div>
+                        </div>
+                    </a>
+                <?php endforeach; ?>
+            </div>
         <?php endif; ?>
     </div>
 </div>
