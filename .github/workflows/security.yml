@@ -18,7 +18,7 @@ jobs:
 
       - name: Run Snyk Test
         run: |
-          cd ProyectoNexusLib/nexuslib
+          cd nexuslib
           snyk test --package-manager=composer
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
