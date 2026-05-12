@@ -6,7 +6,7 @@
 
 ### 🌐 Enlace de Despliegue
 Puedes acceder al sistema desplegado a través del siguiente enlace:
-👉 **[http://nexuslib.ddns.net](http://nexuslib.ddns.net)**
+👉 **[http://nexuslib-upt.canadacentral.cloudapp.azure.com/nexuslib/)**
 
 ---
 
