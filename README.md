@@ -39,7 +39,7 @@ Aunque el paquete ya incluye la configuración base, sigue estos pasos para un d
 1.  **Ubicación:** 
     Copia la carpeta `nexuslib` dentro del directorio de publicación de XAMPP: `C:/xampp/htdocs/`.
 2.  **Base de Datos:**
-    Ejecuta el script SQL ubicado en `nexuslib/database/schema.sql` para crear la base de datos con las tablas necesarias.
+    Ejecuta el script SQL ubicado en `nexuslib/sql/bd_nexus.sql` para crear la base de datos con las tablas necesarias.
 3.  **Gestión de Dependencias (Importante):**
     Si al ejecutar el sistema recibes errores de carga de archivos (ej. `autoload_real.php`), abre una terminal en la carpeta del proyecto y ejecuta:
     ```bash
