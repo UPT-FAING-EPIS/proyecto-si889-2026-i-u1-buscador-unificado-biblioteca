@@ -67,7 +67,7 @@ Integrantes:
 
 [4.2.2 Costos de recursos humanos	8](#4.2.2-costos-de-recursos-humanos)
 
-[4.2.3 Costos generales de Administración	9](#costos-generales-de-administración)
+[4.2.3 Costos generales de Administración	9](#4.2.3-costos-generales-de-administración)
 
 [4.2.4 Tabla general de costos	9](#4.2.4-tabla-general-de-costos)
 
@@ -104,7 +104,7 @@ Fin: 24 de junio
 
 ## **1.3 Descripción** {#1.3-descripción}
 
-El proyecto consiste en el diseño y desarrollo de una plataforma web de acceso abierto orientada a centralizar y simplificar el acceso a la información bibliográfica. El sistema funciona como un motor de búsqueda híbrido que permite a los usuarios realizar consultas simultáneas en dos entornos: el inventario físico local de la facultad y el ecosistema digital global. La solución optimiza la investigación académica al proporcionar, en una sola interfaz, la disponibilidad de textos en estanterías y enlaces directos a recursos bibliográficos en formato PDF alojados en repositorios validados. El sistema se basa en una arquitectura de servicios distribuidos que integra la Google Books API para el enriquecimiento de metadatos en tiempo real. Para su implementación, se utiliza el lenguaje PHP 8.2.12 y MySQL para la persistencia de datos, empleando Terraform para la gestión de infraestructura como código (IaC) sobre Microsoft Azure.
+El proyecto consiste en el diseño y desarrollo de una plataforma web de acceso unificado orientada a centralizar y simplificar el descubrimiento de recursos bibliográficos para la comunidad académica de la Universidad Privada de Tacna. El sistema funciona como un meta-buscador híbrido que integra tres pilares estratégicos: la base de datos local de la biblioteca física de la UPT, el catálogo digital especializado de Alpha Cloud y la extensa colección académica de E-Libro, lo que permite una cobertura mucho más amplia y categorizada.  La solución optimiza la investigación académica al proporcionar, en una sola interfaz, la consulta simultánea de la disponibilidad de textos en estanterías físicas y el acceso directo a recursos electrónicos validados de alta calidad. El sistema se basa en una arquitectura de servicios distribuidos que orquesta la recuperación de metadatos desde repositorios institucionales y externos para ofrecer un catálogo enriquecido. Para su implementación, se utiliza el lenguaje PHP 8.2.12 y MySQL para la persistencia de datos , empleando Terraform para la gestión de infraestructura como código (IaC) sobre Microsoft Azure.
 
 ## **1.4 Objetivos** {#1.4-objetivos}
 
@@ -114,18 +114,19 @@ El proyecto consiste en el diseño y desarrollo de una plataforma web de acceso 
 
 ### **1.4.2 Objetivos específicos** {#1.4.2-objetivos-específicos}
 
-* Diseñar un sistema de búsqueda multicanal que filtre resultados por título, autor, categoría y tipo de recurso (físico o virtual).  
-* Integrar una base de datos local de inventario físico que permita visualizar la disponibilidad de textos en tiempo real.  
-* Integrar un repositorio digital seguro que permita el almacenamiento y la visualización de archivos electrónicos.  
-* Configurar la infraestructura como código (IaC) mediante Terraform para automatizar el despliegue de los servicios en Microsoft Azure y estimar con precisión los costos operativos.  
-* Garantizar la escalabilidad del sistema, permitiendo la futura integración con bases de datos de otras facultades o instituciones.
+* Diseñar e implementar un sistema de búsqueda multicanal que permita filtrar resultados por título, autor y categoría, unificando la consulta de recursos físicos y virtuales en una sola interfaz.    
+* Integrar la base de datos local de la biblioteca de la UPT para permitir a los usuarios visualizar la disponibilidad de los textos físicos en estantería en tiempo real.    
+* Vincular los catálogos digitales de Alpha Cloud y E-Libro para expandir significativamente la oferta bibliográfica y garantizar el acceso a una mayor variedad de categorías académicas.    
+* Configurar la infraestructura como código (IaC) mediante Terraform para automatizar el despliegue de los servicios en Microsoft Azure y gestionar con precisión los costos operativos.    
+* Garantizar la escalabilidad de la arquitectura, facilitando la futura incorporación de bases de datos de otras facultades o repositorios institucionales adicionales. 
 
 # **2\. Riesgos** {#2.-riesgos}
 
-* **Desincronización de Inventario Físico:** Existe la posibilidad de que la base de datos no refleje en tiempo real si un libro físico ha sido tomado de la estantería sin ser registrado, lo que podría generar desconfianza en el usuario al encontrar datos inexactos.  
-* **Complejidad en la Integración de Recursos:** La carga de archivos digitales de gran tamaño o formatos no compatibles podría afectar los tiempos de respuesta del servidor y la experiencia de navegación del estudiante.  
-* **Limitación de Créditos en la Nube:** Al utilizar Azure para el despliegue final, existe el riesgo de agotar la cuota de servicios gratuitos o créditos de estudiante antes de finalizar las pruebas de rendimiento, lo que dificultará la disponibilidad operativa a largo plazo.  
-* **Curva de Aprendizaje en Infraestructura como Código:** El uso de Terraform para el análisis económico y despliegue requiere una configuración precisa; cualquier error en los scripts podría resultar en una estimación de costos errónea o fallos en la provisión de recursos en Azure.
+* **Desincronización del Inventario Físico:** Existe la posibilidad de que la base de datos no refleje en tiempo real si un libro físico ha sido tomado de la estantería de la UPT sin ser registrado, lo que generaría desconfianza en el usuario ante datos inexactos.  
+* **Interrupción o Latencia de APIs Externas:** Al depender de las plataformas Alpha Cloud y E-Libro, el sistema queda sujeto a la disponibilidad técnica de estos proveedores; cualquier caída en sus servicios o lentitud en sus tiempos de respuesta afectará directamente la experiencia de búsqueda unificada.  
+* **Inconsistencia en la Consolidación de Metadatos:** La integración de tres fuentes distintas (UPT, Alpha Cloud y E-Libro) aumenta el riesgo de encontrar registros duplicados o formatos de metadatos incompatibles, lo que podría complicar la visualización homogénea de los recursos.  
+* **Limitación de Créditos en la Nube:** Al utilizar Microsoft Azure para el despliegue, persiste el riesgo de agotar la cuota de créditos de estudiante antes de completar las pruebas de rendimiento, afectando la disponibilidad operativa a largo plazo.  
+* **Gestión de Infraestructura como Código:** El uso de Terraform requiere una configuración extremadamente precisa; errores en los scripts de automatización podrían derivar en fallos en la provisión de recursos en la nube o estimaciones de costos erróneas
 
 # **3\. Análisis de la situación actual** {#3.-análisis-de-la-situación-actual}
 
@@ -140,14 +141,14 @@ Hardware:
 
 * **CPU:** 2 vCPU mínimo  
 * **Memoria RAM**: 4 GB  
-* **Almacenamiento:** SSD para la persistencia de datos de MySQL, logs de transacciones e historiales de búsqueda.
+* **Almacenamiento:** Unidad SSD para garantizar la eficiencia en la persistencia de datos de MySQL, logs de transacciones e historiales de búsqueda.
 
 Software:
 
 * **Entorno de Desarrollo:** Visual Studio Code (configurado con extensiones para PHP 8.2.12 y validación de sintaxis).  
 * **Servidor Local:** XAMPP (Apache para el servidor web y motor de base de datos MySQL).   
 * **Motor de Base de Datos:** MySQL (Gestionado con HeidiSQL para la administración de tablas y relaciones).  
-* **Arquitectura de Servicios:** Integración con la Google Books API para la recuperación automatizada de metadatos bibliográficos.   
+* **Arquitectura de Servicios:** Integración multicanal con Alpha Cloud, E-Libro y la base de datos local de la UPT para la recuperación y unificación automatizada de recursos bibliográficos.  
 * **Nube:** Azure App Service y Azure Database for MySQL.  
 * **Infraestructura como Código:** Terraform v1.x (para el aprovisionamiento de recursos en la nube y análisis económico).  
 * **Gestión de Versiones:** GitHub (Integración con Wikis, Projects y Actions).
@@ -160,11 +161,11 @@ El proyecto resulta factible desde el punto de vista técnico, ya que el equipo 
 
 La viabilidad técnica se sustenta en los siguientes pilares:
 
-* **Dominio del Stack Tecnológico**: El equipo posee experiencia en el desarrollo web con PHP 8.2.12 y el uso de Visual Studio Code, facilitando la creación de una lógica de negocio distribuida para la búsqueda de recursos.  
-* **Arquitectura de Microservicios**: Se implementará una estructura que separa la lógica de presentación del servicio de unificación de datos, integrando microservicios externos como la Google Books API para asegurar un procesamiento eficiente de consultas híbridas  
-* **Gestión de Base de Datos**: Se utilizará MySQL (gestionado mediante HeidiSQL) para la administración de inventarios locales, asegurando una integración fluida con los servicios de Azure Database for MySQL para la persistencia en la nube.  
-* **Infraestructura y Automatización**: El uso de Microsoft Azure proporciona la escalabilidad necesaria para el almacenamiento de archivos, mientras que Terraform permite gestionar dicha infraestructura mediante código, minimizando errores de configuración manual.  
-* **Control de Versiones y Calidad**: La integración con GitHub permite un seguimiento riguroso del avance del proyecto y facilita la implementación de pruebas de aseguramiento de calidad (QA) en cada componente del sistema distribuido.
+* **Dominio del Stack Tecnológico:** El equipo posee experiencia en el desarrollo web con PHP 8.2.12 y el uso de Visual Studio Code, facilitando la creación de una lógica de negocio distribuida para la búsqueda de recursos.  
+* **Arquitectura de Microservicios:** Se implementará una estructura que unifica el acceso a Alpha Cloud, E-Libro y la base de datos local de la UPT, asegurando un procesamiento eficiente de consultas híbridas mediante microservicios que integran estos catálogos de manera transparente.  
+* **Gestión de Base de Datos:** Se utilizará MySQL (gestionado mediante HeidiSQL) para la administración de inventarios locales, asegurando una integración fluida con los servicios de Azure Database for MySQL para la persistencia en la nube.  
+* **Infraestructura y Automatización:** El uso de Microsoft Azure proporciona la escalabilidad necesaria para el almacenamiento de archivos, mientras que Terraform permite gestionar dicha infraestructura mediante código, minimizando errores de configuración manual.  
+* **Control de Versiones y Calidad:** La integración con GitHub permite un seguimiento riguroso del avance del proyecto y facilita la implementación de pruebas de aseguramiento de calidad (QA) en cada componente del sistema distribuido.
 
 La estructura modular y distribuida del sistema asegura que la plataforma pueda escalar y adaptarse con facilidad, permitiendo integrar nuevas fuentes de datos bibliográficos en el futuro sin afectar la disponibilidad de los servicios actuales.
 
@@ -194,7 +195,7 @@ Contempla la inversión en horas de trabajo para el equipo de tres integrantes q
 | 3 | Pruebas y QA | 30 | 40 | 1,200 |
 | **Total** |  |  |  | **7,500** |
 
-3. ### **Costos generales de Administración** {#costos-generales-de-administración}
+### **4.2.3 Costos generales de Administración** {#4.2.3-costos-generales-de-administración}
 
 Gastos operativos básicos necesarios para el sostenimiento del equipo durante el desarrollo.
 
@@ -238,8 +239,8 @@ El proyecto del Sistema de Buscador Unificado es operativamente viable, ya que s
 
 ## **4.4 Factibilidad Legal** {#4.4-factibilidad-legal}
 
-El desarrollo e implementación del sistema se encuentra estrictamente dentro del marco legal vigente. La plataforma no infringe derechos de propiedad intelectual, ya que emplea tecnologías de libre uso y de código abierto, como el motor MySQL y el lenguaje PHP. Asimismo, la integración con la Google Books API se realiza bajo sus términos de servicio para fines académicos, asegurando el respeto a la autoría y los metadatos bibliográficos.  
-El sistema funciona como un facilitador de acceso a la información mediante el redireccionamiento a repositorios públicos y recursos de consulta académica, sin incurrir en el almacenamiento no autorizado de obras protegidas. Al ser una plataforma de acceso abierto y sin registro de usuarios, se elimina la necesidad de gestionar datos sensibles o personales, simplificando el cumplimiento de las normativas de privacidad y seguridad exigidas por la facultad.
+El desarrollo e implementación del sistema se encuentra estrictamente dentro del marco legal vigente. La plataforma no infringe derechos de propiedad intelectual, ya que emplea tecnologías de libre uso y de código abierto, como el motor MySQL y el lenguaje PHP. Asimismo, la integración con las plataformas Alpha Cloud y E-Libro se realiza bajo sus términos de servicio para fines académicos, asegurando el respeto a la autoría y la correcta gestión de los metadatos bibliográficos.    
+El sistema funciona como un facilitador de acceso a la información mediante el redireccionamiento a repositorios validados y recursos de consulta académica, sin incurrir en el almacenamiento no autorizado de obras protegidas. Al ser una plataforma de acceso abierto y sin registro de usuarios, se elimina la necesidad de gestionar datos sensibles o personales, lo que simplifica significativamente el cumplimiento de las normativas de privacidad y seguridad exigidas por la facultad.
 
 ## **4.5 Factibilidad Social** {#4.5-factibilidad-social}
 
@@ -263,10 +264,6 @@ La contribución al desarrollo de una plataforma unificada para identificar y mo
 * **Optimización de recursos físicos**: Las operaciones de búsqueda y gestión automatizadas eliminan la necesidad de catálogos impresos, reduciendo el consumo de papel y otros insumos administrativos de la biblioteca.  
 * **Ahorro en infraestructura TI**: Al implementar una solución en la nube con Azure y Terraform, la institución evita grandes inversiones iniciales en servidores físicos locales, pagando únicamente por los recursos computacionales que realmente utiliza.  
 * **Eficiencia en la gestión del tiempo**: La automatización de la disponibilidad de libros y acceso a PDFs libera la carga administrativa del personal bibliotecario, permitiendo una mejor distribución del talento humano en tareas de asesoría académica.
-
-
-  
-
 
 #### **5.1.1.2 Beneficios intangibles**
 
@@ -321,9 +318,9 @@ La TIR del 17% demuestra que la rentabilidad propia del proyecto es significativ
 
 # **6\. Conclusiones** {#6.-conclusiones}
 
-* El proyecto del Sistema de Buscador Unificado demuestra ser factible en todos los aspectos evaluados: técnico, económico, operativo, legal, social y ambiental.  
-* La propuesta tecnológica basada en una arquitectura de microservicios e integración de APIs externas, utilizando PHP 8.2.12, MySQL e infraestructura en Azure, garantiza una solución robusta y escalable para la gestión de recursos bibliográficos.  
+* El proyecto del Sistema NexusLib demuestra ser plenamente factible en todos los aspectos evaluados: técnico, económico, operativo, legal, social y ambiental.  
+* La propuesta tecnológica, basada en una arquitectura de microservicios que integra de manera unificada la base de datos local de la UPT, Alpha Cloud y E-Libro, garantiza una solución robusta y escalable empleando PHP 8.2.12, MySQL e infraestructura en Azure.  
 * El análisis financiero respalda la inversión con indicadores positivos, destacando un VAN de S/ 4,199.12 y una relación Beneficio/Costo de 1.44, lo que asegura la rentabilidad del sistema bajo el nuevo modelo de desarrollo distribuido.  
-* La optimización del presupuesto, al utilizar herramientas de código abierto como Visual Studio Code y HeidiSQL, permite una gestión eficiente de los recursos institucionales, priorizando la inversión en infraestructura de nube y talento humano.  
-* El sistema representa una oportunidad real de modernización académica, permitiendo a estudiantes y docentes acceder de manera eficiente a la totalidad de la oferta bibliográfica de la institución mediante la unificación de catálogos físicos y digitales.  
-* En conjunto, el proyecto se presenta como una solución sólida con un alto impacto social y educativo, alineado con las metas de transformación digital de la facultad y las exigencias técnicas actuales.
+* La optimización del presupuesto, al utilizar herramientas de código abierto como Visual Studio Code y HeidiSQL, permite una gestión eficiente de los recursos institucionales, priorizando la inversión en infraestructura de nube gestionada por Terraform y el talento humano.  
+* El sistema representa una oportunidad real de modernización académica, permitiendo a estudiantes y docentes acceder de manera eficiente a la totalidad de la oferta bibliográfica de la institución mediante la unificación de catálogos físicos y digitales en una sola interfaz.  
+* En conjunto, el proyecto se presenta como una solución tecnológica sólida con un alto impacto social y educativo, alineada con las metas de transformación digital de la facultad y las exigencias técnicas actuales.

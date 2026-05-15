@@ -1,4 +1,4 @@
-**![C:\\Users\\EPIS\\Documents\\upt.png][image1]**
+![Logo Upt](media/logo-upt.png)
 
 **UNIVERSIDAD PRIVADA DE TACNA**
 
@@ -160,7 +160,7 @@ El propósito de este proyecto es desarrollar una plataforma centralizada que un
 
 **Principios de Calidad:** Basado en las 10 Buenas Prácticas de Programación (Referencia: Infografía de ByteByteGo) para garantizar un desarrollo robusto y mantenible.
 
-**Documentación Técnica:** Manuales de integración de APIs de terceros, centrados principalmente en la Google Books API para la recuperación automatizada de metadatos bibliográficos.
+**Documentación Técnica:** Manuales de integración y protocolos de conexión para Alpha Cloud, E-Libro y la base de datos de la biblioteca de la UPT, centrados en la recuperación automatizada y unificación de metadatos bibliográficos.
 
 	
 
@@ -199,7 +199,7 @@ Los interesados (*stakeholders*) son aquellas personas o entidades que tienen un
 | :---- | :---- | :---- |
 | **Administración de la Biblioteca** | Directivos o dueños del centro de documentación. | Interesados en la rentabilidad de las suscripciones digitales y la eficiencia del servicio. |
 | **Departamento de TI** | Personal técnico encargado de los servidores y redes. | Interesados en que la integración con los sistemas *legacy* no afecte la estabilidad de la red. |
-| **Proveedores de Contenido Digital** | Entidades externas (Ej. Elsevier, Springer, Google Books). | Proveen las APIs y el contenido virtual que el sistema debe consumir. |
+| **Proveedores de Contenido Digital** | Entidades externas (Ej. Alpha Cloud, E-Libro). | Proveen las APIs y el contenido virtual que el sistema debe consumir. |
 | **Personal Bibliotecario** | Empleados que gestionan el inventario físico. | Interesados en que el estado de los libros (prestado/disponible) se refleje correctamente en el buscador. |
 
 	
@@ -286,7 +286,7 @@ El sistema ofrece un conjunto de capacidades core diseñadas para la eficiencia 
 Para el correcto funcionamiento de NexusLib, se asumen los siguientes factores:
 
 * **Conectividad:** Se asume una conexión a internet estable para la consulta de recursos virtuales y una conexión de red local latente para los recursos físicos.  
-* **Calidad de Origen:** El sistema depende de que las APIs de terceros (como Google Books o repositorios institucionales) mantengan sus servicios activos y sus esquemas de datos documentados.  
+* **Calidad de Origen:** El sistema depende de que las fuentes externas (Alpha Cloud y E-Libro) y los repositorios institucionales mantengan sus servicios activos y sus esquemas de datos documentados para asegurar una integración fluida.  
 * **Integridad de Datos Legacy:** Se asume que la base de datos de la biblioteca física cuenta con campos mínimos de identificación (ISBN, Título, Estado de préstamo) para poder indexarlos.
 
 	
@@ -309,7 +309,7 @@ Al ser un proyecto de desarrollo de software bajo demanda o de implementación i
 
 * **Backend:** Despliegue directo en Azure App Service configurado para un entorno Linux/PHP 8.2.12, asegurando una alta disponibilidad y escalabilidad de los servicios.  
 * **Base de Datos:** Requiere el motor MySQL, utilizando Azure Database for MySQL para la persistencia en la nube y HeidiSQL para la administración remota de las tablas y relaciones.  
-* **Configuración:** Uso de variables de entorno para la gestión segura de las credenciales de la Google Books API y las cadenas de conexión a las bases de datos locales y en la nube.
+* **Configuración:** Uso de variables de entorno para la gestión segura de las credenciales de acceso a Alpha Cloud y E-Libro, así como las cadenas de conexión a las bases de datos locales (UPT) y en la nube.
 
 # 	
 
@@ -327,7 +327,7 @@ Esta sección detalla las funcionalidades clave que definen la propuesta de valo
 	Las restricciones definen los límites de diseño y construcción del sistema:
 
 * **R01 \- Compatibilidad Legacy**: El sistema debe ser capaz de conectarse a bases de datos relacionales antiguas (como versiones anteriores de MySQL) sin exigir una migración de los datos existentes, facilitando la integración con inventarios físicos actuales.  
-* **R02 \- Limitaciones de API de Terceros**: El volumen de búsquedas digitales estará sujeto a las cuotas y límites de tráfico (*Rate Limiting*) impuestos por proveedores externos, principalmente la Google Books API.  
+* **R02 \- Limitaciones de API de Terceros**: El volumen de búsquedas digitales estará sujeto a las cuotas y límites de tráfico (Rate Limiting) impuestos por proveedores externos, principalmente Alpha Cloud y E-Libro.  
 * **R03 \- Acceso Público:** El sistema no requerirá la creación de cuentas ni el almacenamiento de credenciales, garantizando un acceso anónimo y rápido a las consultas.  
 * **R04 \- Lenguaje de Implementación**: El núcleo del sistema debe desarrollarse utilizando PHP 8.2.12, aprovechando sus capacidades de tipado fuerte y programación orientada a objetos (POO) para garantizar la correcta aplicación de patrones de diseño en una arquitectura de microservicios.
 
@@ -398,17 +398,17 @@ En un entorno de desarrollo bajo el SDLC, es vital saber qué construir primero 
 
 # [**CONCLUSIONES**](#heading=h.3hxr54n1w5j0) {#conclusiones}
 
-**Unificación Eficiente:** Se logró diseñar una solución que rompe los silos de información, demostrando que mediante el patrón **Adapter**, es posible integrar sistemas *legacy* y tecnologías modernas bajo un modelo de dominio único sin comprometer la integridad de los datos originales.
+**Unificación Eficiente:** Se logró diseñar una solución que rompe los silos de información, demostrando que mediante el patrón Adapter, es posible integrar sistemas *legacy* y tecnologías modernas bajo un modelo de dominio único sin comprometer la integridad de los datos originales.
 
-**Escalabilidad y Mantenimiento:** La aplicación de **SOLID** y **Domain-Driven Design (DDD)** garantiza que el sistema pueda crecer. Agregar una nueva fuente de recursos (como una nueva API de una editorial) no requiere modificar el núcleo del buscador, cumpliendo con el principio de Abierto/Cerrado.
+**Escalabilidad y Mantenimiento:** La aplicación de SOLID y Domain-Driven Design (DDD) garantiza que el sistema pueda crecer. Agregar una nueva fuente de recursos (como una nueva API de una editorial) no requiere modificar el núcleo del buscador, cumpliendo con el principio de Abierto/Cerrado.
 
-**Optimización de la Experiencia:** El uso del patrón **Strategy** permite que el sistema sea versátil, ofreciendo diferentes tipos de búsqueda que se adaptan tanto al usuario académico riguroso como al estudiante que busca rapidez, mejorando los tiempos de respuesta y la precisión de los resultados.
+**Optimización de la Experiencia:** El uso del patrón Strategy permite que el sistema sea versátil, ofreciendo diferentes tipos de búsqueda que se adaptan tanto al usuario académico riguroso como al estudiante que busca rapidez, mejorando los tiempos de respuesta y la precisión de los resultados.
 
 **Robustez y Seguridad:** Al implementar estándares de comunicación cifrada (HTTPS) y saneamiento de entradas, el sistema no solo es funcional, sino que cumple con los rangos de calidad exigidos para proteger la privacidad del usuario y la estabilidad de la infraestructura institucional.
 
 # [**RECOMENDACIONES**](#heading=h.c75ep12k44ho) {#recomendaciones}
 
-* **Implementación de Caché**: Se recomienda integrar una capa de persistencia temporal para los resultados de las APIs externas más frecuentes, optimizando la latencia y el consumo de cuotas de la Google Books API.  
+* **Implementación de Caché**: Se recomienda integrar una capa de persistencia temporal para los resultados de las APIs externas más frecuentes, optimizando la latencia y el consumo de cuotas de Alpha Cloud y E-Libro.  
 * **Refactorización Continua**: Es vital realizar revisiones de código periódicas bajo estándares PSR-12 para asegurar que la arquitectura de microservicios en PHP 8.2.12 se mantenga limpia y facilite el mantenimiento por parte del equipo.  
 * **Pruebas de Usuario (UX)**: Se sugiere realizar pruebas de usabilidad con los perfiles de estudiantes e investigadores definidos para ajustar las estrategias de búsqueda unificada antes del despliegue final.  
 * **Escalabilidad de Microservicios**: Se recomienda mantener la independencia de los módulos de inventario físico y digital ya implementados, permitiendo que la plataforma crezca modularmente según aumente la demanda académica.
@@ -430,3 +430,4 @@ En un entorno de desarrollo bajo el SDLC, es vital saber qué construir primero 
 **Microsoft Learn.** *Evolución de arquitecturas: DDD y Microservicios*. Disponible en: [https://learn.microsoft.com/es-es/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/](https://learn.microsoft.com/es-es/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/)
 
 **OWASP Foundation.** *Top 10 Web Application Security Risks*. Disponible en: [https://owasp.org/www-project-top-ten/](https://owasp.org/www-project-top-ten/)
+

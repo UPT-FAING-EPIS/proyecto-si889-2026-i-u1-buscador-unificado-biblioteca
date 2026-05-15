@@ -105,7 +105,7 @@ Síntomas identificados:
 
 Incluye:
 
-* Búsqueda simultánea en inventario físico (MySQL) y Google Books API.  
+* Búsqueda simultánea en inventario físico (UPT \- MySQL), Alpha Cloud y E-Libro  
 * Visualización de disponibilidad en tiempo real.  
 * Filtrado por autor, ISBN, título.  
 * Localización física (piso y estante).  
@@ -136,7 +136,7 @@ Patrones de Software aplicados:
 
 | PATRÓN | TIPO | PROPÓSITO EN NEXUSLIB |
 | :---: | :---: | :---- |
-| Adapter | Estructural | Conectar la Google Books API y MySQL legacy a una interfaz común |
+| Adapter | Estructural | Conectar las plataformas Alpha Cloud, E-Libro y la base de datos legacy de la UPT a una interfaz común |
 | Strategy | Comportamiento | Intercambiar algoritmos de filtrado (por autor, ISBN, relevancia) |
 | Facade  | Estructural | UnificationService que simplifica la complejidad de múltiples adaptadores |
 | Observer | Comportamiento | Actualizar disponibilidad en tiempo real (futuro) |
@@ -145,7 +145,7 @@ Tecnologías Base
 
 * PHP 8.2.12 \- POO, tipado fuerte  
 * MySQL \- Persistencia de inventario  
-* Google Books API \- Fuente de metadatos externa  
+* Alpha Cloud y E-Libro \- Fuentes de metadatos y recursos académicos externos  
 * Azure \- Infraestructura cloud  
 * Terraform \- IaC
 
@@ -181,14 +181,14 @@ Arquitectura de Software
 | Base de Datos | MySQL | 8.0 | Inventario físico |
 | Infraestructura | Microsoft Azure | \- | App Service \+ DB MySQL |
 | Iac | Terraform | 1.x | Automatización de despliegue |
-| API Externa | Google Books API | v1 | Metadatos bibliográficos |
+| API Externa | Alpha Cloud / E-Libro | v1 | Metadatos bibliográficos |
 
 ## **6.3. Metodología de implementación**  {#6.3.-metodología-de-implementación}
 
 Se utilizará una metodología ágil basada en Scrum con sprints de 2 semanas:
 
 * Sprint 1 (2 semanas): Configuración de infraestructura (Terraform \+ Azure)  
-* Sprint 2 (2 semanas): Implementación de Adapters (MySQL \+ Google Books)  
+* Sprint 2 (2 semanas): Implementación de Adapters (UPT Local \+ Alpha Cloud \+ E-Libro)  
 * Sprint 3 (2 semanas): UnificationService (Facade) y lógica de búsqueda  
 * Sprint 4 (2 semanas): Filtros (Strategy) e interfaz de usuario  
 * Sprint 5 (1 semana): Pruebas y documentación
@@ -218,7 +218,7 @@ Resumen consolidado de la inversión inicial requerida para el Sistema de Buscad
 # **8\. Conclusiones y Recomendaciones** {#8.-conclusiones-y-recomendaciones}
 
 * **Optimización de la búsqueda académica:** Se logró centralizar la información bibliográfica mediante el Sistema NexusLib, resolviendo el problema crítico de fragmentación entre inventarios físicos y digitales. Esta unificación permite reducir el tiempo de investigación de los usuarios, eliminando los procesos lentos de consulta en sistemas separados que anteriormente tomaban entre 15 y 20 minutos.  
-* **Integridad y escalabilidad técnica:** La aplicación de patrones de software estructurales y de comportamiento, específicamente Adapter, Facade y Strategy, garantiza una arquitectura de software modular y desacoplada. Esto permite que la integración entre la Google Books API y la base de datos local MySQL sea eficiente, facilitando el mantenimiento futuro y la adición de nuevas fuentes de metadatos sin comprometer el núcleo del sistema.  
+* **Integridad y escalabilidad técnica:** La aplicación de patrones de software estructurales y de comportamiento, específicamente Adapter, Facade y Strategy, garantiza una arquitectura de software modular y desacoplada. Esto permite que la integración entre los catálogos digitales de Alpha Cloud, E-Libro y la base de datos local de la UPT sea eficiente, facilitando el mantenimiento futuro y la adición de nuevas fuentes de metadatos sin comprometer el núcleo del sistema.  
 * **Viabilidad económica y rentabilidad:** El análisis financiero confirma que el proyecto es plenamente factible y rentable para la institución, presentando un VAN positivo de S/ 4,199.12 y una tasa interna de retorno (TIR) del 17%. Con una relación Beneficio/Costo de 1.44, se asegura que la inversión inicial de S/ 9,540 es recuperable y generará un valor agregado significativo a largo plazo.  
 * **Cumplimiento de requerimientos y usabilidad:** El sistema cumple con los 6 requerimientos funcionales estratégicos, permitiendo no solo la búsqueda híbrida, sino también la localización física exacta (piso y estante) y el acceso digital directo. Esto, sumado al enfoque de diseño Mobile First, asegura una alta usabilidad y satisfacción para el estudiante e investigador sin requerir capacitación especializada.  
 * **Eficiencia en la infraestructura cloud:** La configuración de la infraestructura como código (IaC) mediante Terraform para el despliegue en Microsoft Azure garantiza la alta disponibilidad y seguridad del sistema. Esta implementación técnica asegura que NexusLib sea una plataforma robusta, capaz de manejar consultas simultáneas con tiempos de respuesta optimizados.

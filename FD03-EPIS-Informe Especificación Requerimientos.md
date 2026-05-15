@@ -158,7 +158,7 @@ Desarrollar y desplegar la plataforma NexusLib, utilizando una arquitectura de m
 El organigrama se estructura de la siguiente manera para cubrir todas las áreas del proyecto:
 
 * Director del Proyecto: Responsable de la planificación estratégica y coordinación general.  
-* Gestor de Desarrollo (Backend & APIs): Encargado de la lógica de microservicios y la integración con la Google Books API.  
+* Gestor de Desarrollo (Backend & APIs): Encargado de la lógica de microservicios y la integración con Alpha Cloud, E-Libro y la base de datos de la UPT.
 * Líder de Frontend y Calidad (QA): Responsable de la interfaz de usuario, la experiencia de búsqueda (UX) y las pruebas de aseguramiento de calidad.
 
 # **II. Visionamiento de la Empresa** {#ii.-visionamiento-de-la-empresa}
@@ -185,7 +185,7 @@ Este desorden provoca que muchos recursos digitales que la universidad ya financ
 
 ## **4\. Alcance del proyecto** {#4.-alcance-del-proyecto}
 
-El proyecto comprende el desarrollo de una plataforma web integral que centralice el acceso a la bibliografía institucional. El alcance incluye la implementación de un buscador unificado capaz de consumir y normalizar metadatos de la Google Books API, vinculándolos en tiempo real con el inventario físico y digital de la facultad. Se desarrollarán módulos para el filtrado avanzado (por ISBN, autor y categorías), una interfaz de usuario responsiva diseñada bajo el estándar Mobile First y un sistema de notificaciones para la gestión de disponibilidad de recursos. El despliegue se realizará en la infraestructura de Azure, garantizando que el sistema sea accesible y funcional para toda la comunidad universitaria. 
+El proyecto comprende el desarrollo de una plataforma web integral que centralice el acceso a la bibliografía institucional. El alcance incluye la implementación de un buscador unificado capaz de consumir y normalizar metadatos de Alpha Cloud y E-Libro, vinculándolos en tiempo real con el inventario físico y digital de la biblioteca local de la UPT. Se desarrollarán módulos para el filtrado avanzado (por ISBN, autor y categorías), una interfaz de usuario responsiva diseñada bajo el estándar Mobile First y un sistema de notificaciones para la gestión de disponibilidad de recursos. El despliegue se realizará en la infraestructura de Azure, garantizando que el sistema sea accesible y funcional para toda la comunidad universitaria.
 
 ## **5\. Viabilidad del Sistema** {#5.-viabilidad-del-sistema}
 
@@ -216,8 +216,8 @@ Para que el diseño de NexusLib fuera preciso, recolectamos datos directamente d
 
 | Código | Requerimiento | Descripción |
 | :---- | :---- | :---- |
-| **RF-01** | Búsqueda unificada | El sistema debe realizar consultas simultáneas en el inventario físico (MySQL) y en la Google Books API, presentando los hallazgos en una lista de resultados combinada. |
-| **RF-02** | Visualización de detalles | La plataforma debe mostrar la información completa del libro (portada, resumen de Google y datos físicos de la BD) al ser seleccionado desde la lista. |
+| **RF-01** | Búsqueda unificada | El sistema debe realizar consultas simultáneas en el inventario físico de la UPT (MySQL) y en los servicios de Alpha Cloud y E-Libro, presentando los hallazgos en una lista de resultados combinada. |
+| **RF-02** | Visualización de detalles | La plataforma debe mostrar la información completa del libro (portada, resumen del proveedor digital y datos físicos de la BD) al ser seleccionado desde la lista. |
 | **RF-03** | Consulta de disponibilidad | El software debe mostrar en tiempo real si un libro físico se encuentra disponible o prestado según el stock registrado en MySQL. |
 | **RF-04** | Filtrado de resultados | La aplicación debe permitir organizar y refinar la lista de libros por criterios de autor, título, categorías o código ISBN. |
 | **RF-05** | Localización de recursos | El sistema debe detallar la ubicación exacta (piso y estante) para los libros que se encuentren físicamente en la biblioteca institucional. |
@@ -232,7 +232,7 @@ Para que el diseño de NexusLib fuera preciso, recolectamos datos directamente d
 | **RN-02** | Los resultados de búsqueda deben mostrar primero la disponibilidad física local antes que los recursos externos. | Lógica del Sistema |
 | **RN-03** | Un libro se marcará como "No disponible" automáticamente cuando su stock en la base de datos MySQL llegue a cero. | Lógica del Sistema |
 | **RN-04** | Las búsquedas por ISBN deben normalizarse para omitir guiones o espacios, validando solo los dígitos numéricos. | Diseño del Sistema |
-| **RN-05** | El acceso a la lectura en línea a través de la API de Google estará condicionado a la disponibilidad que otorgue el proveedor externo. | Lógica del Sistema |
+| **RN-05** | El acceso a la lectura en línea a través de las plataformas digitales estará condicionado a la disponibilidad que otorguen Alpha Cloud o E-Libro. | Lógica del Sistema |
 
 # **V. Fase de Desarrollo** {#v.-fase-de-desarrollo}
 
