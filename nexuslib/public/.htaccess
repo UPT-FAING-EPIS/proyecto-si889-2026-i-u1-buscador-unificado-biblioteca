@@ -1,9 +1,0 @@
-
-<IfModule mod_rewrite.c>
-    RewriteEngine On
-    RewriteRule ^(.*)$ ../index.php [QSA,L]
-</IfModule>
-
-<FilesMatch "\.(env|json|lock|sql)$">
-    Deny from all
-</FilesMatch>
