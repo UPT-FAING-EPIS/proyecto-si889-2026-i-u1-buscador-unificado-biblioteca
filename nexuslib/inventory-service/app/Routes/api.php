@@ -26,15 +26,78 @@ if (!empty($_SERVER['PATH_INFO'])) {
 
 $path = ($path === '' || $path === false) ? '/' : '/' . ltrim($path, '/');
 
+if ($method === 'GET' && $path === '/details') {
+	require_once __DIR__ . '/../Config/Database.php';
+	require_once __DIR__ . '/../Repositories/InventoryRepositoryInterface.php';
+	require_once __DIR__ . '/../Repositories/InventoryRepository.php';
+	require_once __DIR__ . '/../Services/InventoryService.php';
+	require_once __DIR__ . '/../Controllers/InventoryController.php';
+
+	$pdo = Database::getConnection();
+	$repo = new InventoryRepository($pdo);
+	$service = new InventoryService($repo);
+	$controller = new InventoryController($service);
+	$controller->details();
+	return;
+}
+
+// Admin: grouped inventory
+if ($method === 'GET' && $path === '/admin/inventory/grouped') {
+	require_once __DIR__ . '/../Config/Database.php';
+	require_once __DIR__ . '/../Repositories/InventoryRepositoryInterface.php';
+	require_once __DIR__ . '/../Repositories/InventoryRepository.php';
+	require_once __DIR__ . '/../Services/InventoryService.php';
+	require_once __DIR__ . '/../Controllers/InventoryController.php';
+
+	$pdo = Database::getConnection();
+	$repo = new InventoryRepository($pdo);
+	$service = new InventoryService($repo);
+	$controller = new InventoryController($service);
+	$controller->grouped();
+	return;
+}
+
+// Admin: records by codigo
+if ($method === 'GET' && $path === '/admin/inventory/records') {
+	require_once __DIR__ . '/../Config/Database.php';
+	require_once __DIR__ . '/../Repositories/InventoryRepositoryInterface.php';
+	require_once __DIR__ . '/../Repositories/InventoryRepository.php';
+	require_once __DIR__ . '/../Services/InventoryService.php';
+	require_once __DIR__ . '/../Controllers/InventoryController.php';
+
+	$pdo = Database::getConnection();
+	$repo = new InventoryRepository($pdo);
+	$service = new InventoryService($repo);
+	$controller = new InventoryController($service);
+	$controller->records();
+	return;
+}
+
+// Admin: update record state
+if ($method === 'PUT' && $path === '/admin/inventory/state') {
+	require_once __DIR__ . '/../Config/Database.php';
+	require_once __DIR__ . '/../Repositories/InventoryRepositoryInterface.php';
+	require_once __DIR__ . '/../Repositories/InventoryRepository.php';
+	require_once __DIR__ . '/../Services/InventoryService.php';
+	require_once __DIR__ . '/../Controllers/InventoryController.php';
+
+	$pdo = Database::getConnection();
+	$repo = new InventoryRepository($pdo);
+	$service = new InventoryService($repo);
+	$controller = new InventoryController($service);
+	$controller->updateState();
+	return;
+}
+
 // Match the internal reserve endpoint anchored to the path portion only
 if ($method === 'POST' && $path === '/internal/reserve') {
 	$raw = file_get_contents('php://input');
 	$data = json_decode($raw, true) ?: [];
-	$registro = isset($data['registro']) ? (int) $data['registro'] : 0;
+	$codigo = trim((string) ($data['codigo'] ?? ''));
 
-	if ($registro <= 0) {
+	if ($codigo === '') {
 		http_response_code(400);
-		echo json_encode(['error' => 'Missing or invalid registro']);
+		echo json_encode(['error' => 'Missing or invalid codigo']);
 		return;
 	}
 
@@ -48,16 +111,16 @@ if ($method === 'POST' && $path === '/internal/reserve') {
 		$repo = new InventoryRepository($pdo);
 		$service = new AvailabilityService($repo);
 
-		$ok = $service->marcarComoReservado($registro);
+		$reservedRegistro = $service->reservarPorCodigo($codigo);
 
-		if ($ok) {
+		if ($reservedRegistro !== false) {
 			http_response_code(200);
-			echo json_encode(['success' => true]);
+			echo json_encode(['success' => true, 'registro' => $reservedRegistro]);
 			return;
 		}
 
 		http_response_code(400);
-		echo json_encode(['error' => 'Registro not found or cannot be reserved']);
+		echo json_encode(['error' => 'No hay stock disponible']);
 		return;
 	} catch (Throwable $e) {
 		http_response_code(500);
@@ -69,11 +132,12 @@ if ($method === 'POST' && $path === '/internal/reserve') {
 if ($method === 'POST' && $path === '/internal/release') {
 	$raw = file_get_contents('php://input');
 	$data = json_decode($raw, true) ?: [];
+	$codigo = trim((string) ($data['codigo'] ?? ''));
 	$registro = isset($data['registro']) ? (int) $data['registro'] : 0;
 
-	if ($registro <= 0) {
+	if ($codigo === '' && $registro <= 0) {
 		http_response_code(400);
-		echo json_encode(['error' => 'Missing or invalid registro']);
+		echo json_encode(['error' => 'Missing or invalid codigo/registro']);
 		return;
 	}
 
@@ -87,7 +151,9 @@ if ($method === 'POST' && $path === '/internal/release') {
 		$repo = new InventoryRepository($pdo);
 		$service = new AvailabilityService($repo);
 
-		$ok = $service->marcarComoDisponible($registro);
+		$ok = $codigo !== ''
+			? $service->liberarPorCodigo($codigo)
+			: $service->marcarComoDisponible($registro);
 
 		if ($ok) {
 			http_response_code(200);

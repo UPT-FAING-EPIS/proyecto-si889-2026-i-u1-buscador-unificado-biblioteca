@@ -28,7 +28,7 @@ try {
 
 	$uri = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?? '/';
 
-	if (preg_match('/\/(save|saved|reserve|reserved|cancel)$/', $uri, $matches)) {
+	if (strpos($uri, '/admin/') === false && preg_match('/\/(save|saved|check-status|reserve|reserved|cancel)$/', $uri, $matches)) {
 		switch ($matches[1]) {
 			case 'save':
 				$controller->save();
@@ -36,6 +36,10 @@ try {
 
 			case 'saved':
 				$controller->getSaved();
+				exit;
+
+			case 'check-status':
+				$controller->checkStatus();
 				exit;
 
 			case 'reserve':
@@ -52,6 +56,13 @@ try {
 		}
 	}
 
+	// Delegar al enrutador si la ruta contiene /admin/ o /internal/
+	if (strpos($uri, '/admin/') !== false || strpos($uri, '/internal/') !== false) {
+		require __DIR__ . '/../app/Routes/api.php';
+		exit;
+	}
+
+	// Respuesta por defecto si no coincide nada
 	http_response_code(404);
 	echo json_encode(['error' => 'Endpoint not found'], JSON_UNESCAPED_UNICODE);
 	exit;

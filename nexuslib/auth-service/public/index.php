@@ -1,5 +1,7 @@
 <?php
 
+require_once __DIR__ . '/../vendor/autoload.php';
+
 // Front controller para auth-service
 
 // Cargar componentes (sin autoload)
@@ -29,7 +31,26 @@ $controller = new AuthController($authService);
 
 // Resolver ruta
 $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
-$path = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH);
+$path = '';
+if (!empty($_SERVER['PATH_INFO'])) {
+	$path = $_SERVER['PATH_INFO'];
+} else {
+	$requestPath = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?? '/';
+	$script = $_SERVER['SCRIPT_NAME'] ?? '';
+
+	if ($script !== '' && strpos($requestPath, $script) === 0) {
+		$path = substr($requestPath, strlen($script));
+	} else {
+		$scriptDir = rtrim(dirname($script), '/\\');
+		if ($scriptDir !== '' && strpos($requestPath, $scriptDir) === 0) {
+			$path = substr($requestPath, strlen($scriptDir));
+		} else {
+			$path = $requestPath;
+		}
+	}
+}
+
+$path = ($path === '' || $path === false) ? '/' : '/' . ltrim($path, '/');
 $lookup = $method . ' ' . $path;
 
 if (isset($routes[$lookup])) {

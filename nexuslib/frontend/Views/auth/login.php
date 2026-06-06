@@ -14,6 +14,8 @@
             
             <h2 class="text-2xl font-bold text-white mb-6 text-center">Iniciar Sesión</h2>
 
+            <div id="login-error" class="hidden mb-4 rounded-lg border border-red-400/60 bg-red-500/10 px-4 py-3 text-sm text-red-200 break-words whitespace-normal"></div>
+
             <form onsubmit="handleLogin(event)">
                 <!-- Email Field -->
                 <div class="mb-6">
@@ -61,23 +63,16 @@
             <!-- Create Account Link -->
             <p class="text-center text-gray-300">
                 ¿No tienes cuenta? 
-                <a href="/auth/register.html" class="text-cyan-400 hover:text-cyan-300 font-semibold transition-colors">
+                <a href="<?php echo view_url('auth/register'); ?>" class="text-cyan-400 hover:text-cyan-300 font-semibold transition-colors">
                     Crear cuenta nueva
                 </a>
             </p>
-
-            <!-- Demo Credentials -->
-            <div class="mt-6 p-4 bg-blue-900 bg-opacity-40 border border-blue-600 rounded-lg">
-                <p class="text-blue-300 text-xs font-semibold mb-2">📝 Credenciales de Demostración:</p>
-                <p class="text-blue-200 text-xs mb-1">Email: <span class="font-mono">demo@nexuslib.com</span></p>
-                <p class="text-blue-200 text-xs">Password: <span class="font-mono">demo123</span></p>
-            </div>
 
         </div>
 
         <!-- Back Home Link -->
         <div class="text-center mt-6">
-            <a href="/home/index.html" class="text-gray-400 hover:text-gray-300 text-sm transition-colors inline-flex items-center gap-2">
+            <a href="<?php echo view_url('home/index'); ?>" class="text-gray-400 hover:text-gray-300 text-sm transition-colors inline-flex items-center gap-2">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
                 </svg>

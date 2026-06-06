@@ -21,7 +21,8 @@ class RequestForwarder
 
 		curl_setopt($ch, CURLOPT_URL, $url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		curl_setopt($ch, CURLOPT_HEADER, false);
+		// Capture response headers so gateway can propagate Set-Cookie and others
+		curl_setopt($ch, CURLOPT_HEADER, true);
 		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, strtoupper($method));
 
 		// Normalize headers to array of "Key: value"
@@ -63,9 +64,33 @@ class RequestForwarder
 		$response = curl_exec($ch);
 		$status = curl_getinfo($ch, CURLINFO_HTTP_CODE) ?: 0;
 
+		$headerSize = 0;
+		$headers = [];
+		$bodyContent = '';
+
+		if ($response !== false) {
+			$headerSize = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
+			$rawHeader = substr($response, 0, $headerSize);
+			$bodyContent = substr($response, $headerSize);
+
+			// Parse raw headers into associative array preserving duplicates (e.g., Set-Cookie)
+			$lines = preg_split("/\r\n|\n|\r/", trim($rawHeader));
+			foreach ($lines as $line) {
+				if (strpos($line, ':') !== false) {
+					list($name, $value) = explode(':', $line, 2);
+					$name = trim($name);
+					$value = trim($value);
+					if (!isset($headers[$name])) $headers[$name] = [];
+					$headers[$name][] = $value;
+				}
+			}
+		} else {
+			$bodyContent = '';
+		}
+
 		curl_close($ch);
 
-		return ['body' => $response === false ? '' : $response, 'status' => (int)$status];
+		return ['body' => $bodyContent, 'status' => (int)$status, 'headers' => $headers];
 	}
 }
 

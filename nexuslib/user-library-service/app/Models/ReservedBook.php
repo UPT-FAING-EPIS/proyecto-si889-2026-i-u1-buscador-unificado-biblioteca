@@ -4,7 +4,8 @@ class ReservedBook
 {
 	private ?int $id = null;
 	private string $user_uuid = '';
-	private int $registro = 0;
+	private string $codigo = '';
+	private ?int $registro = null;
 	private string $estado = 'Pendiente';
 	private ?string $fecha_reserva = null;
 
@@ -15,7 +16,8 @@ class ReservedBook
 		}
 
 		$this->user_uuid = $data['user_uuid'] ?? '';
-		$this->registro = isset($data['registro']) ? (int) $data['registro'] : 0;
+		$this->codigo = (string) ($data['codigo'] ?? '');
+		$this->registro = isset($data['registro']) ? (int) $data['registro'] : null;
 		$this->estado = $data['estado'] ?? 'Pendiente';
 		$this->fecha_reserva = $data['fecha_reserva'] ?? null;
 	}
@@ -40,12 +42,22 @@ class ReservedBook
 		$this->user_uuid = $user_uuid;
 	}
 
-	public function getRegistro(): int
+	public function getCodigo(): string
+	{
+		return $this->codigo;
+	}
+
+	public function setCodigo(string $codigo): void
+	{
+		$this->codigo = $codigo;
+	}
+
+	public function getRegistro(): ?int
 	{
 		return $this->registro;
 	}
 
-	public function setRegistro(int $registro): void
+	public function setRegistro(?int $registro): void
 	{
 		$this->registro = $registro;
 	}

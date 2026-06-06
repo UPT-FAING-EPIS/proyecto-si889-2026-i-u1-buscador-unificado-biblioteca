@@ -32,6 +32,25 @@ class AvailabilityService
 		return $this->repository->updateEstadoByRegistro($registro, 'Reservado');
 	}
 
+	public function reservarPorCodigo(string $codigo): int|false
+	{
+		$codigo = trim($codigo);
+		if ($codigo === '') {
+			return false;
+		}
+
+		$registro = $this->repository->findFirstAvailableByCodigo($codigo);
+		if ($registro === null) {
+			return false;
+		}
+
+		if (!$this->marcarComoReservado($registro)) {
+			return false;
+		}
+
+		return $registro;
+	}
+
 	/**
 	 * Marca un ejemplar como 'Disponible'.
 	 * - Si no existe el registro, devuelve false.
@@ -51,5 +70,20 @@ class AvailabilityService
 		}
 
 		return $this->repository->updateEstadoByRegistro($registro, 'Disponible');
+	}
+
+	public function liberarPorCodigo(string $codigo): bool
+	{
+		$codigo = trim($codigo);
+		if ($codigo === '') {
+			return false;
+		}
+
+		$registro = $this->repository->findFirstReservedByCodigo($codigo);
+		if ($registro === null) {
+			return false;
+		}
+
+		return $this->marcarComoDisponible($registro);
 	}
 }

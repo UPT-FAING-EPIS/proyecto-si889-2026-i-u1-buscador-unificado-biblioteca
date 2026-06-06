@@ -51,6 +51,13 @@ try {
 	exit;
 }
 
+// Delegar al enrutador de administración si la ruta contiene /admin
+if (strpos($uri, '/admin') !== false) {
+    require __DIR__ . '/../app/Routes/api.php';
+    exit;
+}
+
+// Endpoint not found fallback
 http_response_code(404);
 echo json_encode(['error' => 'Endpoint not found'], JSON_UNESCAPED_UNICODE);
 exit;

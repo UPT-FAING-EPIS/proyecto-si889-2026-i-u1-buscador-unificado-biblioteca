@@ -31,6 +31,12 @@ if ($method === 'GET' && $path === '/search') {
 	exit;
 }
 
+if ($method === 'GET' && $path === '/details') {
+	$controller = new ElibroController();
+	$controller->details();
+	exit;
+}
+
 http_response_code(404);
 header('Content-Type: application/json; charset=utf-8');
 echo json_encode(['error' => 'Endpoint not found'], JSON_UNESCAPED_UNICODE);
