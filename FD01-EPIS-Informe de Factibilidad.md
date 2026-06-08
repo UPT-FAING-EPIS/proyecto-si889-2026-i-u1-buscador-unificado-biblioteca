@@ -25,13 +25,14 @@ Integrantes:
 
 # 
 
-# **Versión *2.0***
+# **Versión *3.0***
 
 | CONTROL DE VERSIONES |  |  |  |  |  |
 | :---: | :---: | :---: | :---: | :---: | ----- |
 | Versión | Hecha por | Revisada por | Aprobada por | Fecha | Motivo |
 | 1.0 | LDHO | LDHO | LDHO | 02/04/2026 | Versión Original |
 | 2.0 | LDHO | LDHO | LDHO | 17/04/2026 | Versión 2.0 |
+| 2.0 | LDHO | LDHO | LDHO | 08/06/2026 | Versión 3.0 |
 
 **ÍNDICE GENERAL**
 
@@ -51,17 +52,17 @@ Integrantes:
 
 [**2\. Riesgos	5**](#2.-riesgos)
 
-[**3\. Análisis de la situación actual	5**](#3.-análisis-de-la-situación-actual)
+[**3\. Análisis de la situación actual	6**](#3.-análisis-de-la-situación-actual)
 
-[3.1 Planteamiento del problema	5](#3.1-planteamiento-del-problema)
+[3.1 Planteamiento del problema	6](#3.1-planteamiento-del-problema)
 
 [3.2 Consideraciones de hardware y software	6](#3.2-consideraciones-de-hardware-y-software)
 
-[**4\. Estudio de Factibilidad	6**](#4.-estudio-de-factibilidad)
+[**4\. Estudio de Factibilidad	7**](#4.-estudio-de-factibilidad)
 
-[4.1 Factibilidad Técnica	6](#4.1-factibilidad-técnica)
+[4.1 Factibilidad Técnica	7](#4.1-factibilidad-técnica)
 
-[4.2 Factibilidad Económica	7](#4.2-factibilidad-económica)
+[4.2 Factibilidad Económica	8](#4.2-factibilidad-económica)
 
 [4.2.1 Costos de software	8](#4.2.1-costos-de-software)
 
@@ -75,19 +76,19 @@ Integrantes:
 
 [4.4 Factibilidad Legal	10](#4.4-factibilidad-legal)
 
-[4.5 Factibilidad Social	10](#4.5-factibilidad-social)
+[4.5 Factibilidad Social	11](#4.5-factibilidad-social)
 
-[4.6 Factibilidad Ambiental	10](#4.6-factibilidad-ambiental)
+[4.6 Factibilidad Ambiental	11](#4.6-factibilidad-ambiental)
 
 [**5\. Análisis Financiero	11**](#5.-análisis-financiero)
 
 [5.1 Justificación de la Inversión	11](#5.1-justificación-de-la-inversión)
 
-[5.1.1. Beneficios del proyecto	11](#5.1.1.-beneficios-del-proyecto)
+[5.1.1. Beneficios del proyecto	12](#5.1.1.-beneficios-del-proyecto)
 
-[5.1.2. Criterios de Inversión	12](#5.1.2.-criterios-de-inversión)
+[5.1.2. Criterios de Inversión	13](#5.1.2.-criterios-de-inversión)
 
-[**6\. Conclusiones	14**](#6.-conclusiones)
+[**6\. Conclusiones	15**](#6.-conclusiones)
 
 **Informe de Factibilidad**
 
@@ -104,7 +105,7 @@ Fin: 24 de junio
 
 ## **1.3 Descripción** {#1.3-descripción}
 
-El proyecto consiste en el diseño y desarrollo de una plataforma web de acceso unificado orientada a centralizar y simplificar el descubrimiento de recursos bibliográficos para la comunidad académica de la Universidad Privada de Tacna. El sistema funciona como un meta-buscador híbrido que integra tres pilares estratégicos: la base de datos local de la biblioteca física de la UPT, el catálogo digital especializado de Alpha Cloud y la extensa colección académica de E-Libro, lo que permite una cobertura mucho más amplia y categorizada.  La solución optimiza la investigación académica al proporcionar, en una sola interfaz, la consulta simultánea de la disponibilidad de textos en estanterías físicas y el acceso directo a recursos electrónicos validados de alta calidad. El sistema se basa en una arquitectura de servicios distribuidos que orquesta la recuperación de metadatos desde repositorios institucionales y externos para ofrecer un catálogo enriquecido. Para su implementación, se utiliza el lenguaje PHP 8.2.12 y MySQL para la persistencia de datos , empleando Terraform para la gestión de infraestructura como código (IaC) sobre Microsoft Azure.
+El proyecto consiste en el diseño y desarrollo de una plataforma web de acceso unificado orientada a centralizar y simplificar el descubrimiento de recursos bibliográficos para la comunidad académica de la Universidad Privada de Tacna. El sistema funciona como un meta-buscador híbrido que integra tres pilares estratégicos: la base de datos local de la biblioteca física de la UPT, el catálogo digital especializado de Alpha Cloud y la extensa colección académica de E-Libro, lo que permite una cobertura mucho más amplia y categorizada.  La solución optimiza la investigación académica al proporcionar, en una sola interfaz, la consulta simultánea de la disponibilidad de textos en estanterías físicas y el acceso directo a recursos electrónicos validados de alta calidad. El sistema se basa en una arquitectura de servicios distribuidos que orquesta la recuperación de metadatos desde repositorios institucionales y externos para ofrecer un catálogo enriquecido. Para su implementación, se utiliza el lenguaje PHP 8.2.12 y MySQL para la persistencia de datos, empleando Terraform para la gestión de infraestructura como código (IaC) sobre Microsoft Azure.
 
 ## **1.4 Objetivos** {#1.4-objetivos}
 
@@ -235,12 +236,16 @@ Resumen consolidado de la inversión inicial requerida para el Sistema de Buscad
 
 ## **4.3 Factibilidad Operativa** {#4.3-factibilidad-operativa}
 
-El proyecto del Sistema de Buscador Unificado es operativamente viable, ya que su implementación se adapta al entorno académico y a las capacidades de los usuarios previstos, tanto estudiantes como bibliotecarios. La interfaz intuitiva y el enfoque centralizado facilitan su uso sin necesidad de capacitación especializada, permitiendo una transición fluida desde los métodos de búsqueda tradicionales. Además, el equipo de desarrollo ha considerado la automatización de procesos de consulta y validación de inventario, lo que permite una operación eficiente y sostenible en el tiempo. La arquitectura modular basada en microservicios y PHP también posibilita la incorporación de mejoras o nuevas funcionalidades, como la integración de bases de datos externas adicionales, con mínima afectación al sistema en funcionamiento.
+El proyecto del Sistema NexusLib es operativamente viable, ya que su implementación se adapta de manera óptima al entorno académico y a las capacidades de los usuarios previstos, tanto estudiantes como bibliotecarios. La interfaz intuitiva y el enfoque centralizado facilitan su uso sin necesidad de capacitación especializada, permitiendo una transición fluida desde los métodos de búsqueda tradicionales.
+
+Un factor determinante en esta viabilidad operativa es la optimización exhaustiva de la plataforma para dispositivos móviles mediante un diseño web adaptable (responsive design). Esta arquitectura de interfaz garantiza que todo el flujo del usuario incluyendo la consulta unificada de catálogos, el uso de filtros avanzados y la gestión de módulos personales como libros guardados y reservados sea 100% funcional y fluido en smartphones y tabletas. Al mitigar la sobrecarga visual y priorizar la ligereza en el renderizado móvil, se asegura una experiencia consistente que responde al patrón de uso tecnológico predominante en la comunidad universitaria sin sacrificar el rendimiento del sistema.  
+Además, el equipo de desarrollo ha considerado la automatización de procesos de consulta y validación de inventario, lo que permite una operación eficiente y sostenible en el tiempo. La arquitectura modular basada en microservicios y PHP también posibilita la incorporación de mejoras o nuevas funcionalidades, como la integración de bases de datos externas adicionales o evoluciones en la capa de datos, con mínima afectación al sistema en funcionamiento.
 
 ## **4.4 Factibilidad Legal** {#4.4-factibilidad-legal}
 
-El desarrollo e implementación del sistema se encuentra estrictamente dentro del marco legal vigente. La plataforma no infringe derechos de propiedad intelectual, ya que emplea tecnologías de libre uso y de código abierto, como el motor MySQL y el lenguaje PHP. Asimismo, la integración con las plataformas Alpha Cloud y E-Libro se realiza bajo sus términos de servicio para fines académicos, asegurando el respeto a la autoría y la correcta gestión de los metadatos bibliográficos.    
-El sistema funciona como un facilitador de acceso a la información mediante el redireccionamiento a repositorios validados y recursos de consulta académica, sin incurrir en el almacenamiento no autorizado de obras protegidas. Al ser una plataforma de acceso abierto y sin registro de usuarios, se elimina la necesidad de gestionar datos sensibles o personales, lo que simplifica significativamente el cumplimiento de las normativas de privacidad y seguridad exigidas por la facultad.
+El desarrollo e implementación del sistema se encuentra estrictamente dentro del marco legal vigente. La plataforma no infringe derechos de propiedad intelectual, ya que emplea tecnologías de libre uso y de código abierto, como el lenguaje PHP y un motor de base de datos relacional. Asimismo, la integración con las plataformas Alpha Cloud y E-Libro se realiza bajo sus respectivos términos de servicio para fines académicos, asegurando el respeto a la autoría y la correcta gestión de los metadatos bibliográficos.  
+El sistema funciona como un facilitador de acceso a la información mediante la unificación de catálogos y el redireccionamiento a repositorios validados y recursos de consulta académica, sin incurrir en el almacenamiento no autorizado de obras protegidas.  
+Respecto a la gestión de usuarios, la plataforma incorpora módulos dinámicos de registro, inicio de sesión y persistencia de datos (necesarios para las funciones de libros guardados y reservados). El tratamiento de esta información se alinea estrictamente con la Ley de Protección de Datos Personales en el Perú (Ley N° 29733\) y su reglamento. Para asegurar su cumplimiento, el sistema implementa medidas técnicas de seguridad defensiva, tales como el cifrado de credenciales, el manejo de sesiones mediante tokens protegidos en el cliente y la restricción estricta de acceso a los directorios del servidor. Esto garantiza que la recopilación de datos básicos (nombres y correos electrónicos) se limite exclusivamente a fines operativos y pedagógicos de la biblioteca, salvaguardando la privacidad y confidencialidad exigidas por la facultad y la normativa nacional.
 
 ## **4.5 Factibilidad Social** {#4.5-factibilidad-social}
 

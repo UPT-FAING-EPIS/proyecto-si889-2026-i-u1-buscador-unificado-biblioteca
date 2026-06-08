@@ -41,13 +41,14 @@ Integrantes:
 
 # **Sistema NexusLib**
 
-# **Versión *2.0***
+# **Versión *3.0***
 
 | CONTROL DE VERSIONES |  |  |  |  |  |
 | :---: | :---: | :---: | :---: | :---: | ----- |
 | Versión | Hecha por | Revisada por | Aprobada por | Fecha | Motivo |
 | 1.0 | EGFN | EGFN | EGFN | 02/04/2026 | Versión Original |
 | 2.0 | LDHO | LDHO | LDHO | 17/04/2026 | Versión 2.0 |
+| 3.0 | LDHO | LDHO | LDHO | 08/06/2026 | Versión 3.0 |
 
 **ÍNDICE GENERAL**
 
@@ -73,7 +74,7 @@ Integrantes:
 
 [3.1 Resumen de los interesados	8](#3.1-resumen-de-los-interesados)
 
-[3.2 Resumen de los usuarios	9](#3.2-resumen-de-los-usuarios)
+[3.2 Resumen de los usuarios	8](#3.2-resumen-de-los-usuarios)
 
 [3.3 Entorno de usuario	9](#3.3-entorno-de-usuario)
 
@@ -135,6 +136,7 @@ El propósito de este proyecto es desarrollar una plataforma centralizada que un
   * Búsqueda simultánea en inventarios locales (libros físicos, revistas, archivos) y repositorios remotos (e-books, artículos científicos, bases de datos en la nube).  
   * Sincronización de estados de disponibilidad en tiempo real para recursos físicos.  
   * Personalización de los criterios de búsqueda según las necesidades del usuario (búsquedas por relevancia, categorías o coincidencias exactas).  
+  * Autenticación segura y panel de control (*Dashboard*) para la gestión personal de libros guardados y solicitudes de reserva.  
 * **Funcionalidades Excluidas:**  
   * Gestión de procesos administrativos internos (nóminas, contratación de personal).  
   * Venta de libros o pasarelas de pago para multas.  
@@ -320,7 +322,8 @@ Esta sección detalla las funcionalidades clave que definen la propuesta de valo
 * **C01 \- Interfaz de Búsqueda Omnicanal:** Un único punto de entrada capaz de procesar consultas y delegarlas a múltiples orígenes de datos simultáneamente.  
 * **C02 \- Motor de Normalización de Metadatos:** Capacidad de recibir datos en formatos heterogéneos (JSON de APIs, registros SQL, XML) y transformarlos en un objeto de dominio único.  
 * **C03 \- Gestión de Estrategias de Filtrado:** Permite al usuario alternar entre algoritmos de ordenamiento (por relevancia, por fecha de publicación o por cercanía física) sin recargar la aplicación.  
-* **C04 \- Monitor de Disponibilidad en Tiempo Real:** Servicio en segundo plano que verifica el estado de los ejemplares físicos y actualiza la interfaz del usuario.
+* **C04 \- Monitor de Disponibilidad en Tiempo Real:** Servicio en segundo plano que verifica el estado de los ejemplares físicos y actualiza la interfaz del usuario.  
+* **C05 \- Sistema de Autenticación y Dashboard Personal:** Control seguro de sesiones mediante tokens para que el estudiante gestione, guarde recursos de interés y realice el seguimiento de sus solicitudes de reserva.
 
 # **6\.	Restricciones** {#6.-restricciones}
 
@@ -328,7 +331,7 @@ Esta sección detalla las funcionalidades clave que definen la propuesta de valo
 
 * **R01 \- Compatibilidad Legacy**: El sistema debe ser capaz de conectarse a bases de datos relacionales antiguas (como versiones anteriores de MySQL) sin exigir una migración de los datos existentes, facilitando la integración con inventarios físicos actuales.  
 * **R02 \- Limitaciones de API de Terceros**: El volumen de búsquedas digitales estará sujeto a las cuotas y límites de tráfico (Rate Limiting) impuestos por proveedores externos, principalmente Alpha Cloud y E-Libro.  
-* **R03 \- Acceso Público:** El sistema no requerirá la creación de cuentas ni el almacenamiento de credenciales, garantizando un acceso anónimo y rápido a las consultas.  
+* **R03 \- Control de Acceso Híbrido y Autenticación:** La consulta y búsqueda unificada de catálogos será de acceso público y anónimo. No obstante, para utilizar las funciones del panel de control (Dashboard), guardar recursos de interés o solicitar la reserva de libros físicos, se requerirá obligatoriamente el registro y la autenticación segura del usuario.  
 * **R04 \- Lenguaje de Implementación**: El núcleo del sistema debe desarrollarse utilizando PHP 8.2.12, aprovechando sus capacidades de tipado fuerte y programación orientada a objetos (POO) para garantizar la correcta aplicación de patrones de diseño en una arquitectura de microservicios.
 
 # **7\.	Rangos de calidad** {#7.-rangos-de-calidad}
@@ -366,11 +369,11 @@ En un entorno de desarrollo bajo el SDLC, es vital saber qué construir primero 
 
 ## 	**a[) Estándares legales](#heading=h.r7wurbpv9a4q)** {#a)-estándares-legales}
 
-	Para asegurar que el sistema sea viable en un entorno real y respete la propiedad 		intelectual:
+	Para asegurar la viabilidad legal y el respeto a la propiedad intelectual y la privacidad:
 
-* **Privacidad y anonimato:** Al ser una plataforma de acceso abierto y sin registro de usuarios, el sistema no recolecta, procesa ni almacena datos de carácter personal (como nombres, correos electrónicos o credenciales). Esto garantiza el anonimato total en las búsquedas y elimina la necesidad de gestionar bases de datos sensibles, cumpliendo de forma intrínseca con los principios de minimización de datos de la Ley de Protección de Datos Personales  
-* **Derechos de Autor (Copyright):** El buscador solo mostrará metadatos (título, autor, resumen) y enlaces legales a los recursos. No se permitirá el almacenamiento ni la distribución de archivos PDF que no cuenten con licencias de acceso abierto (Open Access) o suscripciones activas.  
-* **Términos de Uso de APIs:** El software debe respetar las cláusulas de "Uso Aceptable" de los proveedores externos (como Google o Springer), evitando el *scraping* masivo que infrinja sus políticas.
+* **Protección de Datos Personales (Ley N° 29733):** El tratamiento de nombres y correos para el uso del Dashboard cumple estrictamente con la Ley N° 29733\. Se garantiza la confidencialidad mediante el cifrado de contraseñas, sesiones protegidas por tokens y el bloqueo del listado de directorios en el servidor.  
+* **Derechos de Autor (Copyright):** La plataforma solo procesa metadatos y enlaces a recursos externos validados, prohibiendo el almacenamiento o distribución no autorizada de archivos PDF protegidos.  
+* **Términos de Uso de APIs:** El sistema respeta las cuotas de tráfico y políticas de uso aceptable de los proveedores Alpha Cloud y E-Libro, evitando el consumo abusivo o scraping masivo.
 
 ## 	**b[) Estándares de comunicación](#heading=h.r7wurbpv9a4q)** {#b)-estándares-de-comunicación}
 
