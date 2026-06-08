@@ -121,8 +121,6 @@ Una vez activo, abre tu navegador web e ingresa a la dirección: **`http://local
 
 A continuación, se detalla un extracto general de la organización modular del repositorio bajo un esquema de arquitectura limpia y microservicios.
 
-> 💡 **Nota para edición:** Reemplaza este bloque simplificado pegando tu árbol de directorios (*tree*) completo aquí:
-
 ```text
 nexuslib/
 ├── frontend/               # Interfaz visual principal y capas de presentación (Boundaries)
