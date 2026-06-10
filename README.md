@@ -12,6 +12,21 @@ La plataforma se encuentra completamente publicada, operativa y disponible para 
 
 ---
 
+## 🛡️ Análisis Estático y Despliegue Seguro (DevSecOps)
+
+Para dar cumplimiento con las normativas de desarrollo seguro y asegurar la calidad del código fuente frente a bugs o vulnerabilidades de inyección, el repositorio tiene integrados flujos de trabajo (*Pipelines*) mediante **GitHub Actions**.
+
+Las herramientas automatizadas configuradas en el pipeline de Integración Continua (CI) son:
+
+* **SonarCloud:** Utilizado para la auditoría estática de código, medición de deuda técnica, duplicación y detección de *code smells*.
+  * 🔗 [Repositorio de Análisis en SonarCloud](https://github.com/leandrodho/nexuslib-sonar-auditoria)
+  * 📊 [Dashboard Detallado de Resultados](https://sonarcloud.io/project/overview?id=NexusLib)
+* **Snyk Code:** Herramienta de seguridad DevSecOps encargada de realizar un análisis estático de seguridad de aplicaciones (**SAST**). Se configuró para escanear de forma exclusiva el código fuente alojado en el directorio `nexuslib/`, detectando debilidades de seguridad y vulnerabilidades críticas (OWASP Top 10) directamente sobre la lógica de los microservicios.
+
+Para ejecutar de manera local una revisión rápida de sintaxis y estándares antes de realizar un *Push* al repositorio, puedes utilizar los comandos de análisis estático correspondientes a tu entorno de pruebas configurado.
+
+---
+
 ## 🚀 Características Principales
 
 El sistema implementa **9 Requerimientos Funcionales** estratégicos estructurados bajo patrones de diseño de software (*Facade, Adapter y Strategy*):
@@ -137,16 +152,3 @@ nexuslib/
 ```
 
 ---
-
-## 🛡️ Análisis Estático y Despliegue Seguro (DevSecOps)
-
-Para dar cumplimiento con las normativas de desarrollo seguro y asegurar la calidad del código fuente frente a bugs o vulnerabilidades de inyección, el repositorio tiene integrados flujos de trabajo (*Pipelines*) mediante **GitHub Actions**.
-
-Las herramientas automatizadas configuradas en el pipeline de Integración Continua (CI) son:
-
-* **SonarQube:** Utilizado para el análisis estático de código, medición de deuda técnica, cobertura y detección de *code smells*.
-* **Snyk / Semgrep:** Herramientas de seguridad encargadas de escanear las dependencias y el código en busca de vulnerabilidades conocidas (OWASP Top 10) antes de autorizar cualquier despliegue en producción.
-
-
-
-Para ejecutar de manera local una revisión rápida de sintaxis y estándares antes de realizar un *Push* al repositorio, puedes utilizar los comandos de análisis estático correspondientes a tu entorno de pruebas configurado.
