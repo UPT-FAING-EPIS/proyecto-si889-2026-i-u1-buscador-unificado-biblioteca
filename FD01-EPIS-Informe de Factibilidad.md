@@ -14,7 +14,7 @@ Docente: Ing. Patrick Cuadros Quiroga
 
 Integrantes:
 
-***Hurtado Ortiz, Leandro			(2015052384)***  
+***Hurtado Ortiz, Leandro Diego		(2015052384)***  
 ***Flores Navarro, Eduardo Gino		(2023076793)***  
 ***Cortez Mamani, Julio Samuel		(2023077283)***
 
@@ -32,7 +32,7 @@ Integrantes:
 | Versión | Hecha por | Revisada por | Aprobada por | Fecha | Motivo |
 | 1.0 | LDHO | LDHO | LDHO | 02/04/2026 | Versión Original |
 | 2.0 | LDHO | LDHO | LDHO | 17/04/2026 | Versión 2.0 |
-| 2.0 | LDHO | LDHO | LDHO | 08/06/2026 | Versión 3.0 |
+| 3.0 | LDHO | LDHO | LDHO | 08/06/2026 | Versión 3.0 |
 
 **ÍNDICE GENERAL**
 

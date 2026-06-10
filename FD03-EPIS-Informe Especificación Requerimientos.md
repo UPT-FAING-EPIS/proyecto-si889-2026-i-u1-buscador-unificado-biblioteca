@@ -14,7 +14,7 @@ Docente: Ing. Patrick Cuadros Quiroga
 
 Integrantes:
 
-***Hurtado Ortiz, Leandro			(2015052384)***  
+***Hurtado Ortiz, Leandro Diego		(2015052384)***  
 ***Flores Navarro, Eduardo Gino		(2023076793)***  
 ***Cortez Mamani, Julio Samuel		(2023077283)***
 
