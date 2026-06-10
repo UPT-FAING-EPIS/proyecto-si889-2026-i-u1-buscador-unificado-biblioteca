@@ -11,14 +11,14 @@ jobs:
     name: Snyk Security Scan
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
       - name: Setup Snyk
         uses: snyk/actions/setup@master
 
-      - name: Run Snyk Test
+      - name: Run Snyk Code Test
         run: |
-          cd nexuslib
-          snyk test --package-manager=composer
+          snyk code test nexuslib
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
